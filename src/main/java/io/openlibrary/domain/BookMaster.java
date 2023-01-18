@@ -1,5 +1,6 @@
 package io.openlibrary.domain;
 
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
@@ -8,6 +9,7 @@ import java.time.LocalDateTime;
 import java.util.Date;
 
 @NoArgsConstructor
+@Getter
 @Entity
 public class BookMaster {
     @Id

@@ -1,9 +1,13 @@
 package io.openlibrary.domain;
 
 import io.openlibrary.domain.enums.BookState;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
+@NoArgsConstructor
+@Getter
 @Entity
 @Table(name = "BOOK_STOCK", indexes = {
         @Index(name="IDX_BOOK_MASTER_ID",columnList = "bookMasterId",unique = false)

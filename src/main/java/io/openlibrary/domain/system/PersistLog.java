@@ -5,9 +5,9 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 
 @Entity
-public class DatabaseLog {
+public class PersistLog {
     @Id
-    private Long databaseLogId;
+    private Long persistLogId;
     @Column(name = "TRANSACTION_ID")
     private Long transactionId;
     @Column

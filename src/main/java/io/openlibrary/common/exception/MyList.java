@@ -1,6 +1,6 @@
 package io.openlibrary.common.exception;
 
-public enum MyException {
+public enum MyList {
     ENTITIY_NOT_FOUND,
     UNEXPECTIED;
 }

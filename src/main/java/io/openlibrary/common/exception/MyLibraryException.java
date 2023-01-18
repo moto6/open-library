@@ -1,7 +1,7 @@
 package io.openlibrary.common.exception;
 
 public class MyLibraryException extends RuntimeException{
-    public MyLibraryException(MyException exception) {
+    public MyLibraryException(MyList exception) {
         //super(message);
     }
 }

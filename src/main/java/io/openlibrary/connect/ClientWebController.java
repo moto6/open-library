@@ -5,5 +5,5 @@ import org.springframework.stereotype.Controller;
 
 @Controller
 @RequiredArgsConstructor
-public class ViewController {
+public class ClientWebController {
 }

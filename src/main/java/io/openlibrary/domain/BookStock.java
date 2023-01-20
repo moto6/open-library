@@ -10,7 +10,7 @@ import javax.persistence.*;
 @Getter
 @Entity
 @Table(name = "BOOK_STOCK", indexes = {
-        @Index(name="IDX_BOOK_MASTER_ID",columnList = "bookMasterId",unique = false)
+        @Index(name="IDX_BOOK_MASTER_ID",columnList = "BOOK_MASTER_ID",unique = false)
 })
 public class BookStock {
     @Id

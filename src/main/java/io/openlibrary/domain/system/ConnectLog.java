@@ -1,21 +1,30 @@
 package io.openlibrary.domain.system;
 
 import io.openlibrary.common.util.CommonUtils;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.aspectj.lang.ProceedingJoinPoint;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.Serializable;
 
 @Entity
 @NoArgsConstructor
+@Getter
+@EqualsAndHashCode
 public class ConnectLog {
+
     @Id
-    private Long connectLogId;
-    @Id
+    @GeneratedValue
+    private Long id;
+
+    @Column
     private String uri;
     @Column
     private Long requestTimestamp;

@@ -58,12 +58,12 @@ public class SystemAspects {
     }
 
 
-    @AfterThrowing(value = "execution(io.openlibrary.common.exception.MyLibraryException)", throwing = "exception")
-    public void writeFailLog(JoinPoint joinPoint, Exception exception) throws RuntimeException {
-        StringWriter errors = new StringWriter();
-        exception.printStackTrace(new PrintWriter(errors));
-        faultRepository.save(new FaultLog());
-    }
+//    @AfterThrowing(value = "execution(io.openlibrary.common.exception.MyLibraryException)", throwing = "exception")
+//    public void writeFailLog(JoinPoint joinPoint, Exception exception) throws RuntimeException {
+//        StringWriter errors = new StringWriter();
+//        exception.printStackTrace(new PrintWriter(errors));
+//        faultRepository.save(new FaultLog());
+//    }
 }
 
 /*

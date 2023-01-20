@@ -1,6 +1,5 @@
 package io.openlibrary.common.aop;
 
-import io.openlibrary.common.aop.advice.FaultLogger;
 import io.openlibrary.domain.system.ConnectLog;
 import io.openlibrary.domain.system.FaultLog;
 import io.openlibrary.repo.ConnectRepository;
@@ -20,7 +19,7 @@ import java.time.Instant;
 @Component
 @Aspect
 @RequiredArgsConstructor
-public class SomeAspects {
+public class SystemAspects {
 
     private final ConnectRepository connectRepository;
     private final FaultRepository faultRepository;

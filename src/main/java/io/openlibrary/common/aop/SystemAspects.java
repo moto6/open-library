@@ -1,5 +1,6 @@
 package io.openlibrary.common.aop;
 
+import io.openlibrary.common.util.CommonUtils;
 import io.openlibrary.domain.system.ConnectLog;
 import io.openlibrary.domain.system.FaultLog;
 import io.openlibrary.repo.ConnectRepository;
@@ -11,6 +12,7 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.*;
 import org.springframework.stereotype.Component;
 
+import javax.servlet.http.HttpServletResponse;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.time.Instant;
@@ -23,6 +25,7 @@ public class SystemAspects {
 
     private final ConnectRepository connectRepository;
     private final FaultRepository faultRepository;
+    private final CommonUtils commonUtils;
     @Pointcut("@annotation(io.openlibrary.common.aop.advice.FaultLogger)")
     private void FaultLogPointcut() {
     }
@@ -41,13 +44,9 @@ public class SystemAspects {
     @Around("ConnectLogPointcut()")
     public Object connectLog(ProceedingJoinPoint joinPoint) throws Throwable {
         long requestTime = Instant.now().getEpochSecond();
-
         Object proceed = joinPoint.proceed();
         long responseTime = Instant.now().getEpochSecond();
-        //String req=
-        //String res=  구해와!!
-        connectRepository.save(new ConnectLog("http~", requestTime, responseTime, "", ""));
-        log.info("EVENT : start[{}], end[{}]");
+        connectRepository.save(new ConnectLog(requestTime, responseTime, commonUtils, joinPoint));
         return proceed;
     }
 

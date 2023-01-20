@@ -43,10 +43,13 @@ public class ConnectLog {
     public ConnectLog(Long requestTimestamp, Long responseTimestamp, CommonUtils commonUtils, ProceedingJoinPoint joinPoint) {
         HttpServletRequest request = commonUtils.getHttpServletRequest();
         HttpServletResponse response = (HttpServletResponse)joinPoint.getArgs()[1];
+        this.uri = request.getPathInfo();
         this.requestHeader = commonUtils.requestHeader(request);
         this.requestBody = commonUtils.requestBody(request);
         this.responseBody = commonUtils.responseBody(response);
+
         this.requestTimestamp = requestTimestamp;
         this.responseTimestamp = responseTimestamp;
+        this.durationMills = responseTimestamp - requestTimestamp;
     }
 }

@@ -12,10 +12,10 @@ import java.util.Date;
 @Getter
 @Entity
 public class BookMaster {
-    //@Column(name = "BOOK_MASTER_ID")
     @Id
     @GeneratedValue
-    private Long Id;
+    @Column(name = "BOOK_MASTER_ID")
+    private Long bookMasterId;
     @Column
     private String title;//텍스트인덱싱 필요할꺼같은데?
     @Column

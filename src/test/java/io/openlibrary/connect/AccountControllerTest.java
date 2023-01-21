@@ -13,6 +13,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.mockito.BDDMockito.given;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.cookie;
@@ -29,12 +30,12 @@ class AccountControllerTest {
 
     private final String BASE_URL = "http://localhost/api/v0/account";
 
-    @DisplayName("wef")
+    @DisplayName("로그인 성공한다")
     @Test
-    public void run() throws Exception {
+    public void login() throws Exception {
         //given
         given(accountService.login("1234"))
-                .willReturn(new Accounts("","1234",""));
+                .willReturn(new Accounts("", "1234", ""));
         String json = "{\"iamCode\": \"1234\"}";
 
         //when
@@ -45,6 +46,20 @@ class AccountControllerTest {
                                 .content(json))
                 .andExpect(status().isOk())
                 .andExpect(cookie().exists("AccessToken"))
+                .andDo(print());
+    }
+
+    @DisplayName("로그아웃 성공한다")
+    @Test
+    public void logout() throws Exception {
+        //given
+        //when
+        //then
+        mockMvc.perform(
+                        patch(BASE_URL + "/logout")
+                                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(cookie().maxAge("AccessToken", 0))
                 .andDo(print());
     }
 }

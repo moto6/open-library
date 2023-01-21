@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.util.Base64;
 
 @NoArgsConstructor
@@ -20,13 +21,20 @@ public class Accounts {
     private Long accountId;
     @Column(name = "ACCOUNT_BARCODE")
     private String accountBarcode;
-    @Column(name = "IAM_COMDE")
+    @NotBlank
+    @Column(name = "IAM_COMDE", unique = true, nullable = false)
     private String iamCode;
     @Column
     private String note;
 
     public Accounts(String iamCode) {
         this.iamCode = iamCode;
+    }
+
+    public Accounts(String accountBarcode, String iamCode, String note) {
+        this.accountBarcode = accountBarcode;
+        this.iamCode = iamCode;
+        this.note = note;
     }
 
     public String issueAccessToken() {

@@ -13,8 +13,8 @@ public class PreLoader {
     @Bean
     CommandLineRunner initDatabase(AccountRepository repository) {
         return args -> {
-            log.info("Preloading " + repository.save(new Accounts("1234")));
-            log.info("Preloading " + repository.save(new Accounts("0000")));
+            log.info("Preloading " + repository.save(new Accounts("","1234","")));
+            log.info("Preloading " + repository.save(new Accounts("","0000","")));
         };
     }
 }

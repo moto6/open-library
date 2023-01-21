@@ -1,6 +1,6 @@
 package io.openlibrary.connect;
 
-import io.openlibrary.domain.Accounts;
+import io.openlibrary.connect.dto.LoginCommandDto;
 import io.openlibrary.service.AccountService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

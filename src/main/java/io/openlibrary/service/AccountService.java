@@ -13,9 +13,8 @@ public class AccountService {
     private final AccountRepository accountRepository;
 
     public Accounts login(String iamCode) {
-        log.info("iamCode=[{}]",iamCode);
         return accountRepository
-                .findAccountsByIamCodeContains(iamCode)
+                .findAccountsByIamCode(iamCode)
                 .orElseThrow(() -> new RuntimeException("없어요"));
     }
 }

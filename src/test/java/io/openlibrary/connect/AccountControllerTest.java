@@ -15,6 +15,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.cookie;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(MockitoExtension.class)
@@ -39,10 +40,11 @@ class AccountControllerTest {
         //when
         //then
         mockMvc.perform(
-                        post(BASE_URL + "/login") //해당 url로 요청을 한다.
-                                .contentType(MediaType.APPLICATION_JSON) // Json 타입으로 지정
+                        post(BASE_URL + "/login")
+                                .contentType(MediaType.APPLICATION_JSON)
                                 .content(json))
-                .andExpect(status().isOk()) // 응답 status를 ok로 테스트
-                .andDo(print()); //
+                .andExpect(status().isOk())
+                .andExpect(cookie().exists("AccessToken"))
+                .andDo(print());
     }
 }

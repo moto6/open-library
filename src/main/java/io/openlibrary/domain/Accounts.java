@@ -3,18 +3,20 @@ package io.openlibrary.domain;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.web.bind.annotation.RequestMapping;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Base64;
 
 @NoArgsConstructor
 @Getter
+@Table(name = "ACCOUNTS", indexes = {
+        @Index(name="IDX_IAM_COMDE",columnList = "IAM_COMDE",unique = true)
+})
 @Entity
-public class Account {
+public class Accounts {
     @Id
+    @GeneratedValue
+    @Column(name = "ACCOUNT_ID")
     private Long accountId;
     @Column(name = "ACCOUNT_BARCODE")
     private String accountBarcode;
@@ -23,7 +25,7 @@ public class Account {
     @Column
     private String note;
 
-    public Account(String iamCode) {
+    public Accounts(String iamCode) {
         this.iamCode = iamCode;
     }
 

@@ -1,6 +1,6 @@
 package io.openlibrary.common.preload;
 
-import io.openlibrary.domain.Account;
+import io.openlibrary.domain.Accounts;
 import io.openlibrary.repo.AccountRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
@@ -13,8 +13,8 @@ public class PreLoader {
     @Bean
     CommandLineRunner initDatabase(AccountRepository repository) {
         return args -> {
-            log.info("Preloading " + repository.save(new Account("1234")));
-            log.info("Preloading " + repository.save(new Account("0000")));
+            log.info("Preloading " + repository.save(new Accounts("1234")));
+            log.info("Preloading " + repository.save(new Accounts("0000")));
         };
     }
 }

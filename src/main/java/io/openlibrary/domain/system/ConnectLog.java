@@ -19,11 +19,9 @@ import java.io.Serializable;
 @Getter
 @EqualsAndHashCode
 public class ConnectLog {
-
     @Id
     @GeneratedValue
     private Long id;
-
     @Column
     private String uri;
     @Column

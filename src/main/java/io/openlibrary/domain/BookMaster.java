@@ -22,8 +22,8 @@ public class BookMaster {
     private String author;
     @Column
     private String publisher;
-    @Column(name = "PUBLICATION_DATE")
-    private LocalDateTime publicationDate;
+    @Column(name = "PUBLICATION_DATETIME")
+    private LocalDateTime publicationDateTime;
     @Column(name = "ISBN_CODE")
     private String isbnCode;
     @Column

@@ -4,8 +4,7 @@ import io.openlibrary.connect.dto.AccountResponseDto;
 import io.openlibrary.connect.dto.BookMasterResponseDto;
 import io.openlibrary.connect.dto.BookStockResponseDto;
 import io.openlibrary.service.AccountService;
-import io.openlibrary.service.BookMasterService;
-import io.openlibrary.service.BookStockService;
+import io.openlibrary.service.BookService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -16,11 +15,10 @@ import java.util.List;
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/api/v0/admin")
-public class AdminWebController {
+public class AdminController {
 
     private final AccountService adminService;
-    private final BookMasterService bookMasterService;
-    private final BookStockService bookStockService;
+    private final BookService bookService;
 
 
     @GetMapping("/accounts")
@@ -40,28 +38,28 @@ public class AdminWebController {
     @GetMapping("/books")
     public ResponseEntity<List<BookStockResponseDto>> books() {
         //todo #103  //장서조회list >> 이거는 일반이용자도 쓸수있는 API 이므로 Book 에 가라
-        bookStockService.list();
+        bookService.stockList();
         return ResponseEntity.ok(null);
     }
 
     @GetMapping("/book-master")
     public ResponseEntity<List<BookMasterResponseDto>> bookMasterList() {
         //todo #104 //북마스터 조회 list
-        bookMasterService.list();
+        bookService.masterList();
         return ResponseEntity.ok(null);
     }
 
     @PostMapping("/book-master/register")
     public ResponseEntity<BookMasterResponseDto> bookMasterAdd() {
         //todo #105 //북마스터 추가
-        bookMasterService.add();
+        bookService.masterAdd();
         return ResponseEntity.ok(null);
     }
 
     @PatchMapping("/book-master/{isbnCode}")
     public ResponseEntity<?> apiName(@RequestParam String isbnCode) {
         //todo #106//북마스터 변경
-        bookMasterService.modify(isbnCode);
+        bookService.masterModify(isbnCode);
         return ResponseEntity.ok(null);
     }
 

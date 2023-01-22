@@ -6,6 +6,7 @@ import io.openlibrary.common.preload.component.PreloadException;
 import io.openlibrary.common.preload.component.PreloadHandler;
 import io.openlibrary.common.preload.component.PreloadUtils;
 import io.openlibrary.entity.domain.BookMaster;
+import io.openlibrary.entity.repositroy.BookMasterRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.ClassPathResource;
@@ -55,11 +56,13 @@ public class PreloadServiceCsvToBookMaster<T> implements PreloadService<T> {
     @Override
     @Transactional(isolation = Isolation.READ_UNCOMMITTED)
     public void savePreload(JpaRepository<T, Long> jpaRepository, PreloadHandler preloadHandler, Class<T> saveType, Function<? super String[], ? extends T> mapper) {
-        Set<String> isbnSet = new HashSet<>();
+        BookMasterRepository bookMasterRepository = (BookMasterRepository)jpaRepository;
         try (CSVReader reader = new CSVReader(new InputStreamReader(preloadHandler.getResource().getInputStream()))) {
             reader.skip(1);
             reader.iterator().forEachRemaining(csvLine -> {
-                jpaRepository.save(TypeMapping(saveType, csvLine, mapper));
+                //if(bookMasterRepository.findByIsbnCode(csvLine[5]) == null) {
+                    bookMasterRepository.save((BookMaster) TypeMapping(saveType, csvLine, mapper));
+                //}
             });
         } catch (IOException e) {
             log.error("pass... IOException ");

@@ -1,4 +1,4 @@
-package io.openlibrary.domain.system;
+package io.openlibrary.domain.system_entity;
 
 import io.openlibrary.common.util.CommonUtils;
 import lombok.EqualsAndHashCode;
@@ -12,7 +12,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.Serializable;
 
 @Entity
 @NoArgsConstructor

@@ -1,4 +1,4 @@
-package io.openlibrary.domain.system;
+package io.openlibrary.domain.system_entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

@@ -3,6 +3,7 @@ package io.openlibrary.domain;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -14,6 +15,7 @@ import java.util.Base64;
         @Index(name="IDX_IAM_COMDE",columnList = "IAM_COMDE",unique = true)
 })
 @Entity
+@ToString
 public class Accounts {
     @Id
     @GeneratedValue

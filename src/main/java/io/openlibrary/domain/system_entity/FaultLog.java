@@ -1,15 +1,13 @@
-package io.openlibrary.domain.system;
+package io.openlibrary.domain.system_entity;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.validation.constraints.NotEmpty;
 import java.time.Instant;
-import java.time.LocalDateTime;
 
 @Entity
 @Getter

@@ -1,8 +1,7 @@
 package io.openlibrary.common.aop;
 
 import io.openlibrary.common.util.CommonUtils;
-import io.openlibrary.domain.system.ConnectLog;
-import io.openlibrary.domain.system.FaultLog;
+import io.openlibrary.domain.system_entity.ConnectLog;
 import io.openlibrary.repo.ConnectRepository;
 import io.openlibrary.repo.FaultRepository;
 import lombok.RequiredArgsConstructor;
@@ -12,9 +11,6 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.*;
 import org.springframework.stereotype.Component;
 
-import javax.servlet.http.HttpServletResponse;
-import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.time.Instant;
 
 @Slf4j

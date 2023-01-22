@@ -1,7 +1,7 @@
 package io.openlibrary.common.aop;
 
 import io.openlibrary.common.util.CommonUtils;
-import io.openlibrary.domain.system_entity.ConnectLog;
+import io.openlibrary.domain.system.ConnectLog;
 import io.openlibrary.domain.repositroy.ConnectRepository;
 import io.openlibrary.domain.repositroy.FaultRepository;
 import lombok.RequiredArgsConstructor;

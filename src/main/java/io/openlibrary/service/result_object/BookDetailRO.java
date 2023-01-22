@@ -1,9 +1,8 @@
 package io.openlibrary.service.result_object;
 
-import io.openlibrary.domain.enums.BookState;
+import io.openlibrary.domain.entity.enums.BookState;
 import lombok.Data;
 
-import javax.persistence.Column;
 import java.time.LocalDateTime;
 
 @Data

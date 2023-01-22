@@ -87,7 +87,7 @@ spring.jpa.database-platform=org.hibernate.dialect.MySQL5Dialect
 
 
 ## 컨피그파일
-- http://honeymon.io/tech/2021/01/16/spring-boot-config-data-migration.html
+
 - 과거버전
 ```properties
 spring:
@@ -101,3 +101,7 @@ spring:
     activate:
       on-profile: test
 ```
+-  `--spring.profiles.active=prod`
+- 참고문서
+  - https://github.com/spring-projects/spring-boot/wiki/Spring-Boot-Config-Data-Migration-Guide#profile-groups
+  - http://honeymon.io/tech/2021/01/16/spring-boot-config-data-migration.html

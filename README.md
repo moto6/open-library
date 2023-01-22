@@ -84,3 +84,20 @@ spring.datasource.password=패스워드
 spring.datasource.driver-class-name=com.mysql.jdbc.Driver
 spring.jpa.database-platform=org.hibernate.dialect.MySQL5Dialect
 ```
+
+
+## 컨피그파일
+- http://honeymon.io/tech/2021/01/16/spring-boot-config-data-migration.html
+- 과거버전
+```properties
+spring:
+  profiles:
+    active: test
+```
+- 2.4+ 에서 적용되는 버전
+```properties
+spring:
+  config:
+    activate:
+      on-profile: test
+```

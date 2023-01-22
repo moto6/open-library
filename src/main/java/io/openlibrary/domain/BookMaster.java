@@ -10,6 +10,9 @@ import java.util.Date;
 
 @NoArgsConstructor
 @Getter
+@Table(name = "BOOK_MASTER", indexes = {
+        @Index(name="IDX_ISBN_CODE",columnList = "ISBN_CODE",unique = true)
+})
 @Entity
 public class BookMaster {
     @Id

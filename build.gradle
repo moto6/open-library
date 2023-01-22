@@ -30,6 +30,7 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-validation'
+	implementation group: 'com.opencsv', name: 'opencsv', version: '4.4'
 }
 
 tasks.named('test') {

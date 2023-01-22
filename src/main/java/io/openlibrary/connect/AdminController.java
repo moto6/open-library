@@ -58,10 +58,23 @@ public class AdminController {
 
     @PatchMapping("/book-master/{isbnCode}")
     public ResponseEntity<?> apiName(@RequestParam String isbnCode) {
-        //todo #106//북마스터 변경
+        //todo #106 //북마스터 변경
         bookService.masterModify(isbnCode);
         return ResponseEntity.ok(null);
     }
+
+    @PostMapping("import/csv")
+    public ResponseEntity<?> importCsv() {
+        //todo #1
+        return ResponseEntity.ok(null);
+    }
+
+    @GetMapping("export/csv")
+    public ResponseEntity<?> exportCsv() {
+        //todo #1
+        return ResponseEntity.ok(null);
+    }
+
 
 
 }

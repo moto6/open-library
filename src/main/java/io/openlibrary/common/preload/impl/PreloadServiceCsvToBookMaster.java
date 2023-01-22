@@ -8,11 +8,7 @@ import io.openlibrary.common.preload.component.PreloadUtils;
 import io.openlibrary.entity.domain.BookMaster;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.exception.ConstraintViolationException;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.ResourceLoader;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
@@ -21,7 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -33,20 +28,13 @@ import static io.openlibrary.common.preload.component.PreloadException.*;
 @RequiredArgsConstructor
 @Service
 @Slf4j
-public class PreloadServiceCsvImpl<T> implements PreloadService<T> {
-
-    @Value("${preload.filename}")
-    String preloadFilename;
-    @Value("${preload.path}")
-    String preloadPath;
-
-    private final ResourceLoader resourceLoader;
+public class PreloadServiceCsvToBookMaster<T> implements PreloadService<T> {
 
     private final PreloadUtils preloadUtils;
 
     @Override
-    public PreloadHandler initPreload() {
-        ClassPathResource resource = new ClassPathResource(preloadUtils.makePath(preloadPath, preloadFilename));
+    public PreloadHandler initPreload(String path, String fileName) {
+        ClassPathResource resource = new ClassPathResource(preloadUtils.makePath(path, fileName));
         try (CSVReader reader = new CSVReader(new FileReader(resource.getFile().getAbsoluteFile()))) {
             String[] headers = reader.readNext();
             String location = resource.getFilename();
@@ -79,7 +67,7 @@ public class PreloadServiceCsvImpl<T> implements PreloadService<T> {
         } catch (Exception e) {
             e.printStackTrace();
             //e.getCause();
-            log.error("pass... [{}]",e.getMessage());
+            log.error("pass... [{}]", e.getMessage());
         }
     }
 
@@ -103,7 +91,7 @@ public class PreloadServiceCsvImpl<T> implements PreloadService<T> {
         return strings -> {
             BookMaster.BookMasterBuilder builder = BookMaster.builder();
             builder.title(strings[1]);
-            builder.author(strings[2]);
+            builder.author(validAuthoer(strings[2]));
             builder.publisher(strings[3]);
             builder.publicationYear(validYear(strings[4]));
             builder.isbnCode(strings[5]);
@@ -126,20 +114,28 @@ public class PreloadServiceCsvImpl<T> implements PreloadService<T> {
         };
     }
 
+    private static String validAuthoer(String string) {
+        if (string.length() > 100) {
+            return string.substring(0, 99);
+        }
+        return string;
+    }
+
     private static Integer validYear(String string) {
         if (string.isBlank()) {
             return 0;
         }
-        if (string.length() == 4 && isNotChar(string.charAt(0))) {
+        if (string.length() == 4 && isNumber(string.charAt(0)) && isNumber(string.charAt(3))) {
             return Integer.parseInt(string);
         }
-        if (string.endsWith("-")) {
+        if (string.length() == 5 && string.endsWith("-")) {
             return Integer.parseInt(string.substring(0, 3));
         }
         return 0;
+        //string.startsWith("-")
     }
 
-    private static boolean isNotChar(char c) {
+    private static boolean isNumber(char c) {
         return ('0' <= c) && (c <= '9');
     }
 

@@ -1,6 +1,6 @@
 package io.openlibrary.common.preload;
 
-import io.openlibrary.common.preload.impl.PreloadServiceCsvImpl;
+import io.openlibrary.common.preload.impl.PreloadServiceCsvToBookMaster;
 import io.openlibrary.entity.domain.Accounts;
 import io.openlibrary.entity.domain.Administrator;
 import io.openlibrary.entity.domain.BookMaster;
@@ -13,7 +13,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import static io.openlibrary.common.preload.impl.PreloadServiceCsvImpl.mapperCsvToBookMaster;
+import static io.openlibrary.common.preload.impl.PreloadServiceCsvToBookMaster.mapperCsvToBookMaster;
 
 @Slf4j
 @Configuration
@@ -39,10 +39,17 @@ public class PreloadLauncher {
 
     //페이즈에 따라서, 컨피그설정에 따라서 추가하냐마냐 결정하기
     @Bean
-    CommandLineRunner bookAdd(BookMasterRepository bookMasterRepository, PreloadServiceCsvImpl<BookMaster> preloadServiceCsv) {
+    CommandLineRunner bookAdd(BookMasterRepository bookMasterRepository, PreloadServiceCsvToBookMaster<BookMaster> preloadServiceCsvToBookMaster) {
         return args -> {
-            preloadServiceCsv.savePreload(bookMasterRepository, preloadServiceCsv.initPreload(), BookMaster.class, mapperCsvToBookMaster());
-            log.info("Preloading bookMaster Done. count=[{}]",bookMasterRepository.count());
+            preloadServiceCsvToBookMaster.savePreload(bookMasterRepository,
+                    preloadServiceCsvToBookMaster.initPreload("dataset", "daejeon-202212.csv"),
+                    BookMaster.class, mapperCsvToBookMaster());
+            log.info("Preloading bookMaster 1/2 Done. count=[{}]", bookMasterRepository.count());
+            preloadServiceCsvToBookMaster.savePreload(bookMasterRepository,
+                    preloadServiceCsvToBookMaster.initPreload("dataset", "pohang-202212.csv"),
+                    BookMaster.class, mapperCsvToBookMaster());
+            log.info("Preloading bookMaster 2/2 Done. count=[{}]", bookMasterRepository.count());
+
         };
     }
 }

@@ -4,6 +4,7 @@ import io.openlibrary.common.preload.component.PreloadHandler;
 import io.openlibrary.common.preload.impl.PreloadServiceCsvImpl;
 import io.openlibrary.entity.domain.Accounts;
 import io.openlibrary.entity.domain.Administrator;
+import io.openlibrary.entity.domain.BookMaster;
 import io.openlibrary.entity.repositroy.AccountRepository;
 import io.openlibrary.entity.repositroy.AdministratorRepository;
 import io.openlibrary.entity.repositroy.BookMasterRepository;
@@ -46,8 +47,7 @@ public class PreloadLauncher {
 
                 PreloadHandler preloadHandler = preloadServiceCsv.initPreload();
                 List list = preloadServiceCsv.headerPreloadInfo(preloadHandler);
-
-
+                preloadServiceCsv.savePreload(bookMasterRepository, preloadHandler, BookMaster.class);
                 return;
             }
         };

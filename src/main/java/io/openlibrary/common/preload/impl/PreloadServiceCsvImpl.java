@@ -5,7 +5,9 @@ import io.openlibrary.common.preload.PreloadService;
 import io.openlibrary.common.preload.component.PreloadException;
 import io.openlibrary.common.preload.component.PreloadHandler;
 import io.openlibrary.common.preload.component.PreloadUtils;
+import io.openlibrary.entity.repositroy.BookMasterRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
@@ -23,6 +25,7 @@ import static io.openlibrary.common.preload.component.PreloadException.*;
 
 @RequiredArgsConstructor
 @Service
+@Slf4j
 public class PreloadServiceCsvImpl<T> implements PreloadService<T> {
 
     @Value("${preload.filename}")
@@ -37,11 +40,16 @@ public class PreloadServiceCsvImpl<T> implements PreloadService<T> {
     @Override
     public PreloadHandler initPreload() {
         Resource resource = resourceLoader.getResource(preloadUtils.makePath(preloadPath, preloadFilename));
+        if(!resource.exists()) {
+            log.warn("check here : [{}]",preloadUtils.makePath(preloadPath, preloadFilename));
+        }
         try (CSVReader reader = new CSVReader(new InputStreamReader(resource.getInputStream(), StandardCharsets.UTF_8))) {
             String[] headers = reader.readNext();
             String location = resource.getFilename();
             return new PreloadHandler(resource, location, headers);
         } catch (IOException ioException) {
+            log.error("IOException = [{}]",ioException.getMessage());
+            ioException.printStackTrace();
             throw new PreloadException(INIT_FAIL);
         }
     }
@@ -86,4 +94,5 @@ public class PreloadServiceCsvImpl<T> implements PreloadService<T> {
     public void writeAfter(List<String[]> writeData) {
         throw new PreloadException(NOT_YET_IMPL);
     }
+
 }

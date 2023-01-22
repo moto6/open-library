@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.io.IOException;
@@ -21,6 +22,7 @@ import java.util.List;
 import static io.openlibrary.common.preload.component.PreloadException.*;
 
 @RequiredArgsConstructor
+@Service
 public class PreloadServiceCsvImpl<T> implements PreloadService<T> {
 
     @Value("${preload.filename}")

@@ -58,7 +58,6 @@ public class PreloadServiceCsvImpl<T> implements PreloadService<T> {
 
     @Override
     public List<String[]> readPreload(PreloadHandler handler) {
-        //return handler.getHeaders();
         throw new PreloadException(NOT_YET_IMPL);
     }
 
@@ -70,29 +69,24 @@ public class PreloadServiceCsvImpl<T> implements PreloadService<T> {
         try (CSVReader reader = new CSVReader(new InputStreamReader(preloadHandler.getResource().getInputStream()))) {
             reader.skip(1);
             reader.iterator().forEachRemaining(csvLine -> {
-                //isbnSet.contains(csvLine[])
                 jpaRepository.save(TypeMapping(saveType, csvLine, mapper));
             });
         } catch (IOException e) {
+            throw new PreloadException("Fail to save csv");
+        } catch (Exception e) {
             log.error(e.getMessage());
             e.printStackTrace();
             e.getCause();
-            throw new PreloadException("Fail to save csv");
-        } catch (ConstraintViolationException | DataIntegrityViolationException e ) {
-            log.error("PASS : []");
-        } catch (Exception e) {
             log.error("pass...");
         }
     }
 
-    //todo type mapping error 체크해보기
     private T TypeMapping(Class<T> saveType, String[] csvLine, Function<? super String[], ? extends T> mapper) {
         return mapper.apply(csvLine);
     }
 
     @Override
     public List<String> headerPreloadInfo(PreloadHandler handler) {
-        //throw new PreloadException(NOT_YET_IMPL);
         return Arrays.asList(handler.getHeaders());
     }
 

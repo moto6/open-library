@@ -5,21 +5,26 @@ import io.openlibrary.common.preload.PreloadService;
 import io.openlibrary.common.preload.component.PreloadException;
 import io.openlibrary.common.preload.component.PreloadHandler;
 import io.openlibrary.common.preload.component.PreloadUtils;
-import io.openlibrary.entity.repositroy.BookMasterRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.Resource;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.ResourceLoader;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.lang.reflect.Field;
-import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.function.Function;
 
 import static io.openlibrary.common.preload.component.PreloadException.*;
 
@@ -39,16 +44,13 @@ public class PreloadServiceCsvImpl<T> implements PreloadService<T> {
 
     @Override
     public PreloadHandler initPreload() {
-        Resource resource = resourceLoader.getResource(preloadUtils.makePath(preloadPath, preloadFilename));
-        if(!resource.exists()) {
-            log.warn("check here : [{}]",preloadUtils.makePath(preloadPath, preloadFilename));
-        }
-        try (CSVReader reader = new CSVReader(new InputStreamReader(resource.getInputStream(), StandardCharsets.UTF_8))) {
+        ClassPathResource resource = new ClassPathResource(preloadUtils.makePath(preloadPath, preloadFilename));
+        try (CSVReader reader = new CSVReader(new FileReader(resource.getFile().getAbsoluteFile()))) {
             String[] headers = reader.readNext();
             String location = resource.getFilename();
             return new PreloadHandler(resource, location, headers);
         } catch (IOException ioException) {
-            log.error("IOException = [{}]",ioException.getMessage());
+            log.error("IOException = [{}]", ioException.getMessage());
             ioException.printStackTrace();
             throw new PreloadException(INIT_FAIL);
         }
@@ -56,38 +58,42 @@ public class PreloadServiceCsvImpl<T> implements PreloadService<T> {
 
     @Override
     public List<String[]> readPreload(PreloadHandler handler) {
-        throw new PreloadException(INIT_FAIL);
+        //return handler.getHeaders();
+        throw new PreloadException(NOT_YET_IMPL);
     }
 
 
     @Override
     @Transactional
-    public void savePreload(JpaRepository<T, Long> jpaRepository, PreloadHandler preloadHandler, Class<T> saveType) {
+    public void savePreload(JpaRepository<T, Long> jpaRepository, PreloadHandler preloadHandler, Class<T> saveType, Function<? super String[], ? extends T> mapper) {
+        Set<String> isbnSet = new HashSet<>();
         try (CSVReader reader = new CSVReader(new InputStreamReader(preloadHandler.getResource().getInputStream()))) {
             reader.skip(1);
-            reader.iterator().forEachRemaining(s -> jpaRepository.save(TypeMapping(saveType, s)));
+            reader.iterator().forEachRemaining(csvLine -> {
+                //isbnSet.contains(csvLine[])
+                jpaRepository.save(TypeMapping(saveType, csvLine, mapper));
+            });
         } catch (IOException e) {
+            log.error(e.getMessage());
+            e.printStackTrace();
+            e.getCause();
             throw new PreloadException("Fail to save csv");
+        } catch (ConstraintViolationException | DataIntegrityViolationException e ) {
+            log.error("PASS : []");
+        } catch (Exception e) {
+            log.error("pass...");
         }
     }
 
     //todo type mapping error 체크해보기
-    private T TypeMapping(Class<T> saveType, String[] s) {
-        Class<? extends T> clazz = saveType.asSubclass(saveType);
-        Field[] fields = saveType.getDeclaredFields();
-        try {
-            for (int i = 0; i < fields.length; i++) {
-                fields[i].set(clazz, s[i]);
-            }
-            return saveType.cast(clazz);
-        } catch (IllegalAccessException exception) {
-            throw new PreloadException("TypeMapping Error");
-        }
+    private T TypeMapping(Class<T> saveType, String[] csvLine, Function<? super String[], ? extends T> mapper) {
+        return mapper.apply(csvLine);
     }
 
     @Override
-    public List<String[]> headerPreloadInfo(PreloadHandler handler) {
-        throw new PreloadException(NOT_YET_IMPL);
+    public List<String> headerPreloadInfo(PreloadHandler handler) {
+        //throw new PreloadException(NOT_YET_IMPL);
+        return Arrays.asList(handler.getHeaders());
     }
 
     @Override

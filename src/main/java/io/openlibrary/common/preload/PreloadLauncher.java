@@ -40,14 +40,18 @@ public class PreloadLauncher {
 
     //페이즈에 따라서, 컨피그설정에 따라서 추가하냐마냐 결정하기
     @Bean
-    CommandLineRunner bookAdd(BookMasterRepository bookMasterRepository, PreloadServiceCsvImpl preloadServiceCsv ){
+    CommandLineRunner bookAdd(BookMasterRepository bookMasterRepository, PreloadServiceCsvImpl<BookMaster> preloadServiceCsv ){
         return new CommandLineRunner() {
             @Override
             public void run(String... args) throws Exception {
 
                 PreloadHandler preloadHandler = preloadServiceCsv.initPreload();
-                List list = preloadServiceCsv.headerPreloadInfo(preloadHandler);
-                preloadServiceCsv.savePreload(bookMasterRepository, preloadHandler, BookMaster.class);
+                preloadServiceCsv.savePreload(bookMasterRepository, preloadHandler, BookMaster.class,BookMaster.csvMapper());
+                List<String> list = preloadServiceCsv.headerPreloadInfo(preloadHandler);
+                int i=0;
+                for (String s : list) {
+                    log.info("Headers[{}] : [{}]",i++, s);
+                }
                 return;
             }
         };

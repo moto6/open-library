@@ -5,8 +5,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class PreloadUtils {
     public String makePath(String path, String filename) {
-        return "src/main/resources/" + suffixValidate(path) + "/" + prefixValidate(filename);
-    }
+        return suffixValidate(path) + "/" + prefixValidate(filename);
+    }//"src/main/resources/" +
 
     private String suffixValidate(String origin) {
         final String preventedSuffix = "/";

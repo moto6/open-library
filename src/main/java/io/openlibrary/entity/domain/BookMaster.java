@@ -18,17 +18,17 @@ public class BookMaster {
     @GeneratedValue
     @Column(name = "BOOK_MASTER_ID")
     private Long bookMasterId;
-    @Column
-    private String title;//텍스트인덱싱 필요할꺼같은데?
-    @Column
+    @Column(name = "TITLE")
+    private String title; //todo : 텍스트인덱싱 필요
+    @Column(name = "AUTHOR")
     private String author;
-    @Column
+    @Column(name = "PUBLISHER")
     private String publisher;
     @Column(name = "PUBLICATION_YEAR")
     private Integer publicationYear;
     @Column(name = "ISBN_CODE")
     private String isbnCode;
-    @Column
+    @Column(name = "INFO_URL")
     private String infoUrl;
 
     //어딧 필요??
@@ -41,7 +41,6 @@ public class BookMaster {
         this.isbnCode = isbnCode;
         this.infoUrl = infoUrl;
     }
-
 }
 
 

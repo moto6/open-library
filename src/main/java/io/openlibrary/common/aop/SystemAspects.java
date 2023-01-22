@@ -1,9 +1,11 @@
 package io.openlibrary.common.aop;
 
 import io.openlibrary.common.util.CommonUtils;
+import io.openlibrary.entity.repositroy.PersistRepository;
 import io.openlibrary.entity.system.ConnectLog;
 import io.openlibrary.entity.repositroy.ConnectRepository;
 import io.openlibrary.entity.repositroy.FaultRepository;
+import io.openlibrary.entity.system.PersistLog;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
@@ -21,6 +23,7 @@ public class SystemAspects {
 
     private final ConnectRepository connectRepository;
     private final FaultRepository faultRepository;
+    private final PersistRepository persistRepository;
     private final CommonUtils commonUtils;
     @Pointcut("@annotation(io.openlibrary.common.aop.advice.FaultLogger)")
     private void FaultLogPointcut() {
@@ -36,6 +39,15 @@ public class SystemAspects {
     private void ConnectLogPointcut() {
     }
 
+    @Around("PersistLogPointcut()")
+    public Object persistLog(ProceedingJoinPoint joinPoint) throws Throwable {
+        long requestTime = Instant.now().getEpochSecond();
+        Object proceed = joinPoint.proceed();
+        long responseTime = Instant.now().getEpochSecond();
+        persistRepository.save(new PersistLog(null,null
+                ,requestTime, responseTime,true));
+        return proceed;
+    }
 
     @Around("ConnectLogPointcut()")
     public Object connectLog(ProceedingJoinPoint joinPoint) throws Throwable {

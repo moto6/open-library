@@ -12,6 +12,8 @@ services:
     environment:
       MYSQL_DATABASE: open-library
       MYSQL_ROOT_PASSWORD: hardpaaswordplz
+      MYSQL_USER: holy
+      MYSQL_PASSWORD: moly
       TZ: Asia/Seoul
     ports:
       - "18080:3306"

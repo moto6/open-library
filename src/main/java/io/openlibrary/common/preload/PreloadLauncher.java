@@ -48,7 +48,7 @@ public class PreloadLauncher {
             preloadServiceCsvToBookMaster.savePreload(bookMasterRepository,
                     preloadServiceCsvToBookMaster.initPreload("dataset", "daejeon-sample-202212.csv"),
                     BookMaster.class, mapperCsvToBookMaster());
-            log.info("Preloading bookMaster 1/2 Done. count=[{}]", bookMasterRepository.count());
+            log.info("Preloading bookMaster Sample Done. count=[{}]", bookMasterRepository.count());
             /*
             preloadServiceCsvToBookMaster.savePreload(bookMasterRepository,
                     preloadServiceCsvToBookMaster.initPreload("dataset", "daejeon-202212.csv"),

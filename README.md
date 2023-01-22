@@ -80,7 +80,7 @@ docker-compose ps
 ```properties
 spring.datasource.url=jdbc:mysql://{IP 혹은 FQDN}:{PORT}/{DB 이름}?useSSL=false
 spring.datasource.username=root
-spring.datasource.password=패스워드
+spring.datasource.password={패스워드}
 spring.datasource.driver-class-name=com.mysql.jdbc.Driver
 spring.jpa.database-platform=org.hibernate.dialect.MySQL5Dialect
 ```
@@ -101,7 +101,7 @@ spring:
     activate:
       on-profile: test
 ```
--  `--spring.profiles.active=prod`
+- 배포빌드할때 `--spring.profiles.active=prod`
 - 참고문서
+  - https://spring.io/blog/2020/08/14/config-file-processing-in-spring-boot-2-4
   - https://github.com/spring-projects/spring-boot/wiki/Spring-Boot-Config-Data-Migration-Guide#profile-groups
-  - http://honeymon.io/tech/2021/01/16/spring-boot-config-data-migration.html

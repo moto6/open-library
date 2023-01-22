@@ -22,7 +22,7 @@ public class BookService {
         return o;
     }
 
-    public List<BookMaster> search(BookQueryDto bookQueryDto) {
+    public List<BookMaster> searchByTitle(BookQueryDto bookQueryDto) {
         return null;
     }
 
@@ -45,6 +45,10 @@ public class BookService {
     }
 
     public BookDetailRO detailByisbn(String isbnCode) {
+        return null;
+    }
+
+    public List<BookMaster> searchByAuthor(BookQueryDto bookQueryDto) {
         return null;
     }
 }

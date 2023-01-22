@@ -30,26 +30,29 @@ public class BookController {
 
 
 
-    @GetMapping("/search")
-    public ResponseEntity<List<BookMasterResponseDto>> bookMasterQuery(@RequestBody BookQueryDto bookQueryDto) {
-        //todo #202 - bookMaster 리턴해줘야함. 왜냐하면 고객들은 장서를 찾는게 아니라 책의 종류(book-master)로 인식하기 떄문
-        bookService.search(bookQueryDto);
+    @GetMapping("/search/title")
+    public ResponseEntity<List<BookMasterResponseDto>> titleQuery(@RequestBody BookQueryDto bookQueryDto) {
+        //todo #202 - bookMaster 리턴해줘야함. 제목기준으로 full-text-scan
+        bookService.searchByTitle(bookQueryDto);
+        return ResponseEntity.ok(null);
+    }
+    @GetMapping("/search/author")
+    public ResponseEntity<List<BookMasterResponseDto>> authorQuery(@RequestBody BookQueryDto bookQueryDto) {
+        //todo #202 - bookMaster 리턴해줘야함. 저자기준으로 검색
+        bookService.searchByAuthor(bookQueryDto);
         return ResponseEntity.ok(null);
     }
 
+
     @GetMapping("/{bookMasterCode}")
-    public ResponseEntity<BookDetailResponseDto> bookMaster(@RequestParam String bookMasterCode) {
-        //todo #1
-        bookService.detailByCode(bookMasterCode);
-        return ResponseEntity.ok(null);
+    public ResponseEntity<BookDetailResponseDto> detailByCode(@RequestParam String bookMasterCode) {
+        //todo #203 - bookMasterCode 기준으로 책 세부내용 조회
+        return ResponseEntity.ok(new BookDetailResponseDto(bookService.detailByCode(bookMasterCode)));
     }
 
     @GetMapping("/{isbnCode}")
     public ResponseEntity<BookDetailResponseDto> bookMasterIsbn(@RequestParam String isbnCode) {
-        //todo #1
-
+        //todo #204 - isbnCode 기준으로 책 세부내용 조회
         return ResponseEntity.ok(new BookDetailResponseDto(bookService.detailByisbn(isbnCode)));
     }
-
-
 }

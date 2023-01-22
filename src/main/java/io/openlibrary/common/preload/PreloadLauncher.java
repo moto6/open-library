@@ -1,17 +1,25 @@
-package io.openlibrary.common.util;
+package io.openlibrary.common.preload;
 
+import io.openlibrary.common.preload.component.PreloadHandler;
+import io.openlibrary.common.preload.impl.PreloadServiceCsvImpl;
 import io.openlibrary.entity.domain.Accounts;
 import io.openlibrary.entity.domain.Administrator;
 import io.openlibrary.entity.repositroy.AccountRepository;
 import io.openlibrary.entity.repositroy.AdministratorRepository;
+import io.openlibrary.entity.repositroy.BookMasterRepository;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.List;
+
 @Slf4j
 @Configuration
-public class PreLoadDatabase {
+@RequiredArgsConstructor
+public class PreloadLauncher {
+
     @Bean
     CommandLineRunner accountInitDatabase(AccountRepository repository) {
         return args -> {
@@ -28,5 +36,24 @@ public class PreLoadDatabase {
             log.info("Preloading " + repository.save(new Administrator("kelly.j")));
         };
     }
+
+    //페이즈에 따라서, 컨피그설정에 따라서 추가하냐마냐 결정하기
+    @Bean
+    CommandLineRunner bookAdd(BookMasterRepository bookMasterRepository, PreloadServiceCsvImpl preloadServiceCsv ){
+        return new CommandLineRunner() {
+            @Override
+            public void run(String... args) throws Exception {
+
+                PreloadHandler preloadHandler = preloadServiceCsv.initPreload();
+                List list = preloadServiceCsv.headerPreloadInfo(preloadHandler);
+
+
+                return;
+            }
+        };
+    }
+
+
+
 }
 //https://spring.io/guides/tutorials/rest/

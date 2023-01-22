@@ -1,6 +1,6 @@
 package io.openlibrary.service.result_object;
 
-import io.openlibrary.domain.entity.enums.BookState;
+import io.openlibrary.entity.domain.enums.BookState;
 import lombok.Data;
 
 import java.time.LocalDateTime;

@@ -1,6 +1,6 @@
-package io.openlibrary.domain.entity;
+package io.openlibrary.entity.domain;
 
-import io.openlibrary.domain.entity.enums.BookState;
+import io.openlibrary.entity.domain.enums.BookState;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 

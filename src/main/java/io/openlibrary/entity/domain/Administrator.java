@@ -1,4 +1,4 @@
-package io.openlibrary.domain.entity;
+package io.openlibrary.entity.domain;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

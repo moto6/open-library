@@ -1,6 +1,6 @@
-package io.openlibrary.domain.repositroy;
+package io.openlibrary.entity.repositroy;
 
-import io.openlibrary.domain.entity.BookStock;
+import io.openlibrary.entity.domain.BookStock;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface BookStockRepository extends JpaRepository<BookStock, Long> {

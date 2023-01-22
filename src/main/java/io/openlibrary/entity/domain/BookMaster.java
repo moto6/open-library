@@ -1,12 +1,10 @@
-package io.openlibrary.domain.entity;
+package io.openlibrary.entity.domain;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.time.DateTimeException;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @NoArgsConstructor
 @Getter

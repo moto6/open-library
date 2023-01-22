@@ -1,6 +1,6 @@
-package io.openlibrary.domain.repositroy;
+package io.openlibrary.entity.repositroy;
 
-import io.openlibrary.domain.entity.Accounts;
+import io.openlibrary.entity.domain.Accounts;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

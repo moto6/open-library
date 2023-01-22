@@ -1,6 +1,6 @@
 package io.openlibrary.connect;
 
-import io.openlibrary.domain.entity.Accounts;
+import io.openlibrary.entity.domain.Accounts;
 import io.openlibrary.service.AccountService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

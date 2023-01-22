@@ -1,6 +1,6 @@
-package io.openlibrary.domain.repositroy;
+package io.openlibrary.entity.repositroy;
 
-import io.openlibrary.domain.entity.BookMaster;
+import io.openlibrary.entity.domain.BookMaster;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface BookMasterRepository extends JpaRepository<BookMaster,Long> {

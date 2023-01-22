@@ -1,4 +1,4 @@
-package io.openlibrary.domain.system;
+package io.openlibrary.entity.system;
 
 import io.openlibrary.common.util.CommonUtils;
 import lombok.EqualsAndHashCode;

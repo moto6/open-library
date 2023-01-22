@@ -1,4 +1,4 @@
-package io.openlibrary.domain.entity.enums;
+package io.openlibrary.entity.domain.enums;
 
 public enum BookState {
     SHELF,  // 서가에 비치된 상태

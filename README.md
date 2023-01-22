@@ -64,3 +64,23 @@ lend : 내가 빌려주는 경우. 증여하거나, 타인에게 나중에 나�
   ```shell
   
   ```
+
+## 로컬환경 실행 인프라셋팅
+```shell
+#DB 실행
+docker-compose -f mysql-docker-compose.yml up -d
+
+#DB 상태확인
+docker-compose ps
+
+
+```
+
+- 프로퍼티 체크
+```properties
+spring.datasource.url=jdbc:mysql://{IP 혹은 FQDN}:{PORT}/{DB 이름}?useSSL=false
+spring.datasource.username=root
+spring.datasource.password=패스워드
+spring.datasource.driver-class-name=com.mysql.jdbc.Driver
+spring.jpa.database-platform=org.hibernate.dialect.MySQL5Dialect
+```

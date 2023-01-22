@@ -5,11 +5,11 @@ spring:
 
   config:
     activate:
-      on-profile: test
+      on-profile: demo
 
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://localhost:18080
+    url: jdbc:mysql://localhost:18080/openlibrary
     username: root
     password: hardpaaswordplz
 

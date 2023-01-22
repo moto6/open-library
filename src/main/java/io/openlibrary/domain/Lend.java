@@ -11,8 +11,8 @@ import javax.validation.constraints.NotEmpty;
 public class Lend {
     @Id
     @GeneratedValue
-    @Column(name = "RENT_ID")
-    private Long rentId;
+    @Column(name = "LEND_ID")
+    private Long lendId;
     @NotBlank
     @Column(name = "ACCOUNT_ID")
     private Long accountId;

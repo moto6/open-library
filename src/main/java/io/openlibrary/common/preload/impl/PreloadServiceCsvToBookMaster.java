@@ -61,7 +61,8 @@ public class PreloadServiceCsvToBookMaster<T> implements PreloadService<T> {
             reader.skip(1);
             reader.iterator().forEachRemaining(csvLine -> {
                 //if(bookMasterRepository.findByIsbnCode(csvLine[5]) == null) {
-                    bookMasterRepository.save((BookMaster) TypeMapping(saveType, csvLine, mapper));
+                bookMasterRepository.save((BookMaster) TypeMapping(saveType, csvLine, mapper));
+                //bookMasterRepository.insertif((BookMaster) TypeMapping(saveType, csvLine, mapper));
                 //}
             });
         } catch (IOException e) {

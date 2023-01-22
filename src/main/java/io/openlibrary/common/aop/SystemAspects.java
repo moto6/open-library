@@ -2,8 +2,8 @@ package io.openlibrary.common.aop;
 
 import io.openlibrary.common.util.CommonUtils;
 import io.openlibrary.domain.system_entity.ConnectLog;
-import io.openlibrary.repo.ConnectRepository;
-import io.openlibrary.repo.FaultRepository;
+import io.openlibrary.domain.repositroy.ConnectRepository;
+import io.openlibrary.domain.repositroy.FaultRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;

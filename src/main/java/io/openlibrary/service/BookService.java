@@ -1,10 +1,10 @@
 package io.openlibrary.service;
 
 import io.openlibrary.connect.dto.BookQueryDto;
-import io.openlibrary.domain.BookMaster;
-import io.openlibrary.domain.BookStock;
-import io.openlibrary.repo.BookMasterRepository;
-import io.openlibrary.repo.BookStockRepository;
+import io.openlibrary.domain.entity.BookMaster;
+import io.openlibrary.domain.entity.BookStock;
+import io.openlibrary.domain.repositroy.BookMasterRepository;
+import io.openlibrary.domain.repositroy.BookStockRepository;
 import io.openlibrary.service.result_object.BookDetailRO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

@@ -1,9 +1,9 @@
 package io.openlibrary.common.preload;
 
-import io.openlibrary.domain.Accounts;
-import io.openlibrary.domain.Administrator;
-import io.openlibrary.repo.AccountRepository;
-import io.openlibrary.repo.AdministratorRepository;
+import io.openlibrary.domain.entity.Accounts;
+import io.openlibrary.domain.entity.Administrator;
+import io.openlibrary.domain.repositroy.AccountRepository;
+import io.openlibrary.domain.repositroy.AdministratorRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;

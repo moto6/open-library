@@ -1,4 +1,4 @@
-package io.openlibrary.domain;
+package io.openlibrary.domain.entity;
 
 import io.openlibrary.domain.enums.BookState;
 import lombok.Getter;

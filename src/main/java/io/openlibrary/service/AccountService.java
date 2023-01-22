@@ -1,7 +1,7 @@
 package io.openlibrary.service;
 
-import io.openlibrary.domain.Accounts;
-import io.openlibrary.repo.AccountRepository;
+import io.openlibrary.domain.entity.Accounts;
+import io.openlibrary.domain.repositroy.AccountRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

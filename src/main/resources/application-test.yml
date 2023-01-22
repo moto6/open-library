@@ -1,4 +1,12 @@
 spring:
+
+  application:
+    name: open-library
+
+  config:
+    activate:
+      on-profile: test
+
   h2:
     console:
       enabled: true

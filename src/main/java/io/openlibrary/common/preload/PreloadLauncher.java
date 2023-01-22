@@ -1,6 +1,5 @@
 package io.openlibrary.common.preload;
 
-import io.openlibrary.common.preload.component.PreloadHandler;
 import io.openlibrary.common.preload.impl.PreloadServiceCsvImpl;
 import io.openlibrary.entity.domain.Accounts;
 import io.openlibrary.entity.domain.Administrator;
@@ -14,7 +13,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import java.util.List;
+import static io.openlibrary.common.preload.impl.PreloadServiceCsvImpl.mapperCsvToBookMaster;
 
 @Slf4j
 @Configuration
@@ -24,8 +23,8 @@ public class PreloadLauncher {
     @Bean
     CommandLineRunner accountInitDatabase(AccountRepository repository) {
         return args -> {
-            log.info("Preloading " + repository.save(new Accounts("","1234","")));
-            log.info("Preloading " + repository.save(new Accounts("","0000","")));
+            log.info("Preloading " + repository.save(new Accounts("", "1234", "")));
+            log.info("Preloading " + repository.save(new Accounts("", "0000", "")));
         };
     }
 
@@ -40,24 +39,11 @@ public class PreloadLauncher {
 
     //페이즈에 따라서, 컨피그설정에 따라서 추가하냐마냐 결정하기
     @Bean
-    CommandLineRunner bookAdd(BookMasterRepository bookMasterRepository, PreloadServiceCsvImpl<BookMaster> preloadServiceCsv ){
-        return new CommandLineRunner() {
-            @Override
-            public void run(String... args) throws Exception {
-
-                PreloadHandler preloadHandler = preloadServiceCsv.initPreload();
-                preloadServiceCsv.savePreload(bookMasterRepository, preloadHandler, BookMaster.class,BookMaster.csvMapper());
-                List<String> list = preloadServiceCsv.headerPreloadInfo(preloadHandler);
-                int i=0;
-                for (String s : list) {
-                    log.info("Headers[{}] : [{}]",i++, s);
-                }
-                return;
-            }
+    CommandLineRunner bookAdd(BookMasterRepository bookMasterRepository, PreloadServiceCsvImpl<BookMaster> preloadServiceCsv) {
+        return args -> {
+            preloadServiceCsv.savePreload(bookMasterRepository, preloadServiceCsv.initPreload(), BookMaster.class, mapperCsvToBookMaster());
+            log.info("Preloading bookMaster Done. count=[{}]",bookMasterRepository.count());
         };
     }
-
-
-
 }
 //https://spring.io/guides/tutorials/rest/

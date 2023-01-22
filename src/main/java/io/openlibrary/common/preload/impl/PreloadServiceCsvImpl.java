@@ -5,6 +5,7 @@ import io.openlibrary.common.preload.PreloadService;
 import io.openlibrary.common.preload.component.PreloadException;
 import io.openlibrary.common.preload.component.PreloadHandler;
 import io.openlibrary.common.preload.component.PreloadUtils;
+import io.openlibrary.entity.domain.BookMaster;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.exception.ConstraintViolationException;
@@ -14,8 +15,9 @@ import org.springframework.core.io.ResourceLoader;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -63,7 +65,7 @@ public class PreloadServiceCsvImpl<T> implements PreloadService<T> {
 
 
     @Override
-    @Transactional
+    @Transactional(isolation = Isolation.READ_UNCOMMITTED)
     public void savePreload(JpaRepository<T, Long> jpaRepository, PreloadHandler preloadHandler, Class<T> saveType, Function<? super String[], ? extends T> mapper) {
         Set<String> isbnSet = new HashSet<>();
         try (CSVReader reader = new CSVReader(new InputStreamReader(preloadHandler.getResource().getInputStream()))) {
@@ -72,12 +74,12 @@ public class PreloadServiceCsvImpl<T> implements PreloadService<T> {
                 jpaRepository.save(TypeMapping(saveType, csvLine, mapper));
             });
         } catch (IOException e) {
-            throw new PreloadException("Fail to save csv");
+            log.error("pass... IOException ");
+            //throw new PreloadException("Fail to save csv");
         } catch (Exception e) {
-            log.error(e.getMessage());
             e.printStackTrace();
-            e.getCause();
-            log.error("pass...");
+            //e.getCause();
+            log.error("pass... [{}]",e.getMessage());
         }
     }
 
@@ -93,6 +95,52 @@ public class PreloadServiceCsvImpl<T> implements PreloadService<T> {
     @Override
     public void writeAfter(List<String[]> writeData) {
         throw new PreloadException(NOT_YET_IMPL);
+    }
+
+
+    public static Function<? super String[], ? extends BookMaster> mapperCsvToBookMaster() {
+
+        return strings -> {
+            BookMaster.BookMasterBuilder builder = BookMaster.builder();
+            builder.title(strings[1]);
+            builder.author(strings[2]);
+            builder.publisher(strings[3]);
+            builder.publicationYear(validYear(strings[4]));
+            builder.isbnCode(strings[5]);
+            return builder
+                    .build();
+            //0-번호,
+            // 1-도서명,
+            // 2저자,
+            // 3출판사,
+            // 4발행년도,
+            // 5ISBN,
+            // 6세트 ISBN,
+            // 7부가기호,
+            // 8권,
+            // 9주제분류번호,
+            // 10도서권수,
+            // 11대출건수,
+            // 12등록일자,
+
+        };
+    }
+
+    private static Integer validYear(String string) {
+        if (string.isBlank()) {
+            return 0;
+        }
+        if (string.length() == 4 && isNotChar(string.charAt(0))) {
+            return Integer.parseInt(string);
+        }
+        if (string.endsWith("-")) {
+            return Integer.parseInt(string.substring(0, 3));
+        }
+        return 0;
+    }
+
+    private static boolean isNotChar(char c) {
+        return ('0' <= c) && (c <= '9');
     }
 
 }

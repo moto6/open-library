@@ -17,3 +17,4 @@ services:
       TZ: Asia/Seoul
     ports:
       - "18080:3306"
+# docker-compose -f mysql-docker-compose.yml up -d

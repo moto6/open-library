@@ -38,11 +38,11 @@ public class CommonUtils {
                     wrapper.copyBodyToResponse();
                 }
             }
-            return null == payload ? " - " : payload;
+            return null == payload ? "-EMPTY-" : payload;
         } catch (IOException e) {
-            System.out.println("에러발생");
+            log.error("responseBody Parsing Error");
         }
-        return "EMPTY HTTP-RESPONSE BODY";
+        return "-EMPTY-";
     }
 
     public String requestBody(HttpServletRequest request) {
@@ -65,7 +65,7 @@ public class CommonUtils {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        return "EMPTY HTTP-RESPONSE BODY";
+        return "-EMPTY-";
     }
 
     public String requestHeader(HttpServletRequest request) {

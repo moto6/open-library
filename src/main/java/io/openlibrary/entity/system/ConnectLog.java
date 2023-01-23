@@ -18,9 +18,10 @@ import javax.servlet.http.HttpServletResponse;
 public class ConnectLog {
     @Id
     @GeneratedValue
-    private Long id;
-    @Column
-    private String uri;
+    @Column(name = "CONNECT_LOG_ID")
+    private Long connectLogId;
+    @Column(name = "REQUEST_ID")
+    private Long requestId;
     @Column
     private Long requestTimestamp;
     @Column
@@ -34,8 +35,8 @@ public class ConnectLog {
     @Column(length = 500)
     private String responseBody;
 
-    public ConnectLog(String uri, Long requestTimestamp, Long responseTimestamp, String requestHeader, String requestBody, String responseBody) {
-        this.uri = uri;
+    public ConnectLog(Long requestId, Long requestTimestamp, Long responseTimestamp, String requestHeader, String requestBody, String responseBody) {
+        this.requestId = requestId;
         this.requestTimestamp = requestTimestamp;
         this.responseTimestamp = responseTimestamp;
         this.durationMills = responseTimestamp - requestTimestamp;
@@ -47,7 +48,7 @@ public class ConnectLog {
     public ConnectLog(Long requestTimestamp, Long responseTimestamp, CommonUtils commonUtils, ProceedingJoinPoint joinPoint) {
         HttpServletRequest request = commonUtils.getHttpServletRequest();
         HttpServletResponse response = (HttpServletResponse)joinPoint.getArgs()[1];
-        this.uri = request.getPathInfo();
+        this.requestId = (long) request.getAttribute("X-Request-ID");
         this.requestHeader = commonUtils.requestHeader(request);
         this.requestBody = commonUtils.requestBody(request);
         this.responseBody = commonUtils.responseBody(response);

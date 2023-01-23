@@ -25,27 +25,38 @@ public class SystemAspects {
     private final FaultRepository faultRepository;
     private final PersistRepository persistRepository;
     private final CommonUtils commonUtils;
+
     @Pointcut("@annotation(io.openlibrary.common.aop.advice.FaultLogger)")
     private void FaultLogPointcut() {
     }
 
 
-    @Pointcut("@annotation(io.openlibrary.common.aop.advice.PersistLogger)")
-    private void PersistLogPointcut() {
-    }
+//    @Pointcut("@annotation(io.openlibrary.common.aop.advice.PersistLogger)")
+//    private void PersistLogPointcut() {
+//        // @within = 특정한 타입 내의 조인 포인트에 대하여 매칭
+//        // 정한 타입 내의 조인 포인트를 매칭합니다
+
+//    }
 
 
     @Pointcut("@annotation(io.openlibrary.common.aop.advice.ConnectLogger)")
     private void ConnectLogPointcut() {
     }
 
-    @Around("PersistLogPointcut()")
+    @Pointcut("@within(io.openlibrary.common.aop.advice.PersistLogger)")
+    private void AllConnect() {
+
+    }
+
+
+    //@Around(value = "PersistLogPointcut(), AllConnect()")
+    @Around(value = "AllConnect()")
     public Object persistLog(ProceedingJoinPoint joinPoint) throws Throwable {
         long requestTime = Instant.now().getEpochSecond();
         Object proceed = joinPoint.proceed();
         long responseTime = Instant.now().getEpochSecond();
-        persistRepository.save(new PersistLog(null,null
-                ,requestTime, responseTime,true));
+        persistRepository.save(new PersistLog(null, null
+                , requestTime, responseTime, true));
         return proceed;
     }
 

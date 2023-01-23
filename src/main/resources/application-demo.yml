@@ -8,7 +8,7 @@ spring:
       on-profile: demo
 
   datasource:
-    driver-class-name: com.mysql.jdbc.Driver
+    driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:18080/openlibrary
     username: root
     password: hardpaaswordplz
@@ -25,6 +25,7 @@ spring:
         #show_sql: true
         format_sql: true
         use_sql_comments: true
+    open-in-view: false
 
 
 

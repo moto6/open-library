@@ -11,7 +11,6 @@ import java.util.Optional;
 public interface BookMasterRepository extends JpaRepository<BookMaster,Long> {
     BookMaster findByIsbnCode(String isbnCode);
 
-    @PersistLogger
     BookMaster save(BookMaster bookMaster);
 
     @Modifying

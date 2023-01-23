@@ -1,5 +1,6 @@
 package io.openlibrary.connect;
 
+import io.openlibrary.common.aop.advice.ConnectLogger;
 import io.openlibrary.connect.dto.BookDetailResponseDto;
 import io.openlibrary.connect.dto.BookMasterResponseDto;
 import io.openlibrary.connect.dto.BookQueryDto;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.List;
 
 @Controller
+@ConnectLogger
 @RequiredArgsConstructor
 @RequestMapping("/api/v0/books")
 public class BookController {

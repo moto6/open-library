@@ -1,5 +1,7 @@
 package io.openlibrary.connect;
 
+import io.openlibrary.common.aop.advice.ConnectLogger;
+import io.openlibrary.common.aop.advice.TimeCheck;
 import io.openlibrary.connect.dto.LoginCommandDto;
 import io.openlibrary.service.AccountService;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +16,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 
 @RestController
+@ConnectLogger
 @RequiredArgsConstructor
 @RequestMapping("/api/v0/account")
 public class AccountController {

@@ -1,5 +1,6 @@
 package io.openlibrary.connect;
 
+import io.openlibrary.common.aop.advice.ConnectLogger;
 import io.openlibrary.connect.dto.AccountResponseDto;
 import io.openlibrary.connect.dto.BookMasterResponseDto;
 import io.openlibrary.connect.dto.BookStockResponseDto;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
+@ConnectLogger
 @RequiredArgsConstructor
 @RequestMapping("/api/v0/admin")
 public class AdminController {

@@ -22,7 +22,7 @@ import static io.openlibrary.common.preload.impl.PreloadServiceCsvToBookMaster.m
 public class PreloadLauncher {
 
     @Bean
-    @Profile(value = {"test","demo"})
+    @Profile(value = {"test", "demo"})
     CommandLineRunner accountInitDatabase(AccountRepository repository) {
         return args -> {
             log.info("Preloading " + repository.save(new Accounts("", "1234", "")));
@@ -31,7 +31,7 @@ public class PreloadLauncher {
     }
 
     @Bean
-    @Profile(value = {"test","demo"})
+    @Profile(value = {"test", "demo"})
     CommandLineRunner adminInitDatabase(AdministratorRepository repository) {
         return args -> {
             log.info("Preloading " + repository.save(new Administrator("jake.ryu")));
@@ -42,7 +42,7 @@ public class PreloadLauncher {
 
     //페이즈에 따라서, 컨피그설정에 따라서 추가하냐마냐 결정하기
     @Bean
-    @Profile(value = {"test","demo"})
+    @Profile(value = {"test", "demo"})
     CommandLineRunner bookAdd(BookMasterRepository bookMasterRepository, PreloadServiceCsvToBookMaster<BookMaster> preloadServiceCsvToBookMaster) {
         return args -> {
             preloadServiceCsvToBookMaster.savePreload(bookMasterRepository,

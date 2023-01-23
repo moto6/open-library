@@ -9,7 +9,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -18,10 +17,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(AdminController.class)
 class AdminControllerTest {
     private static final String BASE_URL = "http://localhost/api/v0/admin";
-    
+
     @Autowired
     private MockMvc mockMvc;
-        
+
     @Test
     @DisplayName("")
     void accountList() throws Exception {
@@ -35,7 +34,7 @@ class AdminControllerTest {
 
     @Test
     @DisplayName("")
-    void accountDetail()throws Exception  {
+    void accountDetail() throws Exception {
         //todo #102 회원상세조회 : 파라미터 받지말고 쿠키에 있는 토큰으로 찾아오기
         mockMvc.perform(
                         post(BASE_URL + "/default")

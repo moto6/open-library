@@ -12,7 +12,7 @@ import java.util.Base64;
 @NoArgsConstructor
 @Getter
 @Table(name = "ACCOUNTS", indexes = {
-        @Index(name="IDX_IAM_COMDE",columnList = "IAM_COMDE",unique = true)
+        @Index(name = "IDX_IAM_COMDE", columnList = "IAM_COMDE", unique = true)
 })
 @Entity
 @ToString

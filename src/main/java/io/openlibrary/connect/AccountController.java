@@ -1,16 +1,11 @@
 package io.openlibrary.connect;
 
 import io.openlibrary.common.aop.advice.ConnectLogger;
-import io.openlibrary.common.aop.advice.TimeCheck;
 import io.openlibrary.connect.dto.LoginCommandDto;
 import io.openlibrary.service.AccountService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
@@ -24,7 +19,7 @@ public class AccountController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginCommandDto loginCommandDto, HttpServletResponse response) {
-        Cookie cookie = new Cookie("AccessToken",accountService.login(loginCommandDto.getIamCode()).issueAccessToken());
+        Cookie cookie = new Cookie("AccessToken", accountService.login(loginCommandDto.getIamCode()).issueAccessToken());
         cookie.setMaxAge(3600);
         cookie.setPath("/");
         response.addCookie(cookie);

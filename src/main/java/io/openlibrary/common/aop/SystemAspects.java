@@ -1,19 +1,21 @@
 package io.openlibrary.common.aop;
 
 import io.openlibrary.common.util.CommonUtils;
-import io.openlibrary.entity.repositroy.PersistRepository;
-import io.openlibrary.entity.system.ConnectLog;
 import io.openlibrary.entity.repositroy.ConnectRepository;
 import io.openlibrary.entity.repositroy.FaultRepository;
+import io.openlibrary.entity.repositroy.PersistRepository;
+import io.openlibrary.entity.system.ConnectLog;
 import io.openlibrary.entity.system.PersistLog;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.annotation.*;
+import org.aspectj.lang.annotation.After;
+import org.aspectj.lang.annotation.Around;
+import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
-import org.springframework.transaction.support.TransactionSynchronizationManager;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 

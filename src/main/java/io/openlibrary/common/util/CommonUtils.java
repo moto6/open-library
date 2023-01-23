@@ -48,7 +48,7 @@ public class CommonUtils {
     public String requestBody(HttpServletRequest request) {
         try (
                 InputStream InputStream = request.getInputStream();
-                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(InputStream));
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(InputStream))
         ) {
             StringBuilder stringBuilder = new StringBuilder();
             String line;
@@ -74,7 +74,7 @@ public class CommonUtils {
 
     private String headerToString(Map<String, String[]> headerMap) {
         return headerMap.entrySet().stream()
-                .map(header -> String.format("%s:%s",header.getKey(), Arrays.toString(header.getValue())))
+                .map(header -> String.format("%s:%s", header.getKey(), Arrays.toString(header.getValue())))
                 .collect(Collectors.joining(", "));
     }
 

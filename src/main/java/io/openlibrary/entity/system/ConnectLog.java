@@ -47,7 +47,7 @@ public class ConnectLog {
 
     public ConnectLog(Long requestTimestamp, Long responseTimestamp, CommonUtils commonUtils, ProceedingJoinPoint joinPoint) {
         HttpServletRequest request = commonUtils.getHttpServletRequest();
-        HttpServletResponse response = (HttpServletResponse)joinPoint.getArgs()[1];
+        HttpServletResponse response = (HttpServletResponse) joinPoint.getArgs()[1];
         this.requestId = (long) request.getAttribute("X-Request-ID");
         this.requestHeader = commonUtils.requestHeader(request);
         this.requestBody = commonUtils.requestBody(request);

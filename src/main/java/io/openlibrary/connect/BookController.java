@@ -31,13 +31,13 @@ public class BookController {
     }
 
 
-
     @GetMapping("/search/title")
     public ResponseEntity<List<BookMasterResponseDto>> titleQuery(@RequestBody BookQueryDto bookQueryDto) {
         //todo #202 - bookMaster 리턴해줘야함. 제목기준으로 full-text-scan
         bookService.searchByTitle(bookQueryDto);
         return ResponseEntity.ok(null);
     }
+
     @GetMapping("/search/author")
     public ResponseEntity<List<BookMasterResponseDto>> authorQuery(@RequestBody BookQueryDto bookQueryDto) {
         //todo #202 - bookMaster 리턴해줘야함. 저자기준으로 검색

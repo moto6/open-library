@@ -22,13 +22,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ExtendWith(MockitoExtension.class)
 @WebMvcTest(AccountController.class)
 class AccountControllerTest {
+    private final String BASE_URL = "http://localhost/api/v0/account";
     @Autowired
     private MockMvc mockMvc;
-
     @MockBean
     private AccountService accountService;
-
-    private final String BASE_URL = "http://localhost/api/v0/account";
 
     @DisplayName("로그인 성공한다")
     @Test

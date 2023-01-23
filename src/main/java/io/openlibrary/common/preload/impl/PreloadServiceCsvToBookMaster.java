@@ -19,12 +19,11 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.function.Function;
 
-import static io.openlibrary.common.preload.component.PreloadException.*;
+import static io.openlibrary.common.preload.component.PreloadException.INIT_FAIL;
+import static io.openlibrary.common.preload.component.PreloadException.NOT_YET_IMPL;
 
 @RequiredArgsConstructor
 @Service
@@ -32,63 +31,6 @@ import static io.openlibrary.common.preload.component.PreloadException.*;
 public class PreloadServiceCsvToBookMaster<T> implements PreloadService<T> {
 
     private final PreloadUtils preloadUtils;
-
-    @Override
-    public PreloadHandler initPreload(String path, String fileName) {
-        ClassPathResource resource = new ClassPathResource(preloadUtils.makePath(path, fileName));
-        try (CSVReader reader = new CSVReader(new FileReader(resource.getFile().getAbsoluteFile()))) {
-            String[] headers = reader.readNext();
-            String location = resource.getFilename();
-            return new PreloadHandler(resource, location, headers);
-        } catch (IOException ioException) {
-            log.error("IOException = [{}]", ioException.getMessage());
-            ioException.printStackTrace();
-            throw new PreloadException(INIT_FAIL);
-        }
-    }
-
-    @Override
-    public List<String[]> readPreload(PreloadHandler handler) {
-        throw new PreloadException(NOT_YET_IMPL);
-    }
-
-
-    @Override
-    @Transactional(isolation = Isolation.READ_UNCOMMITTED)
-    public void savePreload(JpaRepository<T, Long> jpaRepository, PreloadHandler preloadHandler, Class<T> saveType, Function<? super String[], ? extends T> mapper) {
-        BookMasterRepository bookMasterRepository = (BookMasterRepository)jpaRepository;
-        try (CSVReader reader = new CSVReader(new InputStreamReader(preloadHandler.getResource().getInputStream()))) {
-            reader.skip(1);
-            reader.iterator().forEachRemaining(csvLine -> {
-                //if(bookMasterRepository.findByIsbnCode(csvLine[5]) == null) {
-                bookMasterRepository.save((BookMaster) TypeMapping(saveType, csvLine, mapper));
-                //bookMasterRepository.insertif((BookMaster) TypeMapping(saveType, csvLine, mapper));
-                //}
-            });
-        } catch (IOException e) {
-            log.error("pass... IOException ");
-            //throw new PreloadException("Fail to save csv");
-        } catch (Exception e) {
-            e.printStackTrace();
-            //e.getCause();
-            log.error("pass... [{}]", e.getMessage());
-        }
-    }
-
-    private T TypeMapping(Class<T> saveType, String[] csvLine, Function<? super String[], ? extends T> mapper) {
-        return mapper.apply(csvLine);
-    }
-
-    @Override
-    public List<String> headerPreloadInfo(PreloadHandler handler) {
-        return Arrays.asList(handler.getHeaders());
-    }
-
-    @Override
-    public void writeAfter(List<String[]> writeData) {
-        throw new PreloadException(NOT_YET_IMPL);
-    }
-
 
     public static Function<? super String[], ? extends BookMaster> mapperCsvToBookMaster() {
 
@@ -141,6 +83,61 @@ public class PreloadServiceCsvToBookMaster<T> implements PreloadService<T> {
 
     private static boolean isNumber(char c) {
         return ('0' <= c) && (c <= '9');
+    }
+
+    @Override
+    public PreloadHandler initPreload(String path, String fileName) {
+        ClassPathResource resource = new ClassPathResource(preloadUtils.makePath(path, fileName));
+        try (CSVReader reader = new CSVReader(new FileReader(resource.getFile().getAbsoluteFile()))) {
+            String[] headers = reader.readNext();
+            String location = resource.getFilename();
+            return new PreloadHandler(resource, location, headers);
+        } catch (IOException ioException) {
+            log.error("IOException = [{}]", ioException.getMessage());
+            ioException.printStackTrace();
+            throw new PreloadException(INIT_FAIL);
+        }
+    }
+
+    @Override
+    public List<String[]> readPreload(PreloadHandler handler) {
+        throw new PreloadException(NOT_YET_IMPL);
+    }
+
+    @Override
+    @Transactional(isolation = Isolation.READ_UNCOMMITTED)
+    public void savePreload(JpaRepository<T, Long> jpaRepository, PreloadHandler preloadHandler, Class<T> saveType, Function<? super String[], ? extends T> mapper) {
+        BookMasterRepository bookMasterRepository = (BookMasterRepository) jpaRepository;
+        try (CSVReader reader = new CSVReader(new InputStreamReader(preloadHandler.getResource().getInputStream()))) {
+            reader.skip(1);
+            reader.iterator().forEachRemaining(csvLine -> {
+                //if(bookMasterRepository.findByIsbnCode(csvLine[5]) == null) {
+                bookMasterRepository.save((BookMaster) TypeMapping(saveType, csvLine, mapper));
+                //bookMasterRepository.insertif((BookMaster) TypeMapping(saveType, csvLine, mapper));
+                //}
+            });
+        } catch (IOException e) {
+            log.error("pass... IOException ");
+            //throw new PreloadException("Fail to save csv");
+        } catch (Exception e) {
+            e.printStackTrace();
+            //e.getCause();
+            log.error("pass... [{}]", e.getMessage());
+        }
+    }
+
+    private T TypeMapping(Class<T> saveType, String[] csvLine, Function<? super String[], ? extends T> mapper) {
+        return mapper.apply(csvLine);
+    }
+
+    @Override
+    public List<String> headerPreloadInfo(PreloadHandler handler) {
+        return Arrays.asList(handler.getHeaders());
+    }
+
+    @Override
+    public void writeAfter(List<String[]> writeData) {
+        throw new PreloadException(NOT_YET_IMPL);
     }
 
 }

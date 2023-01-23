@@ -6,9 +6,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
-import java.util.Optional;
 @PersistLogger
-public interface BookMasterRepository extends JpaRepository<BookMaster,Long> {
+public interface BookMasterRepository extends JpaRepository<BookMaster, Long> {
     BookMaster findByIsbnCode(String isbnCode);
 
     BookMaster save(BookMaster bookMaster);

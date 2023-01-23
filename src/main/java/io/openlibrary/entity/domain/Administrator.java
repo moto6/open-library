@@ -11,7 +11,7 @@ import javax.validation.constraints.NotBlank;
 @Getter
 @ToString
 @Table(name = "ADMINISTRATOR", indexes = {
-        @Index(name="IDX_ADMINISTRATOR_CODE",columnList = "ADMINISTRATOR_CODE",unique = true)
+        @Index(name = "IDX_ADMINISTRATOR_CODE", columnList = "ADMINISTRATOR_CODE", unique = true)
 })
 @NoArgsConstructor
 public class Administrator {
@@ -22,6 +22,7 @@ public class Administrator {
     @NotBlank
     @Column(name = "ADMINISTRATOR_CODE", nullable = false, unique = true)
     private String administratorCode;
+
     public Administrator(String administratorCode) {
         this.administratorCode = administratorCode;
     }

@@ -1,8 +1,5 @@
 package io.openlibrary.connect;
 
-import io.openlibrary.connect.dto.BookDetailResponseDto;
-import io.openlibrary.connect.dto.BookMasterResponseDto;
-import io.openlibrary.connect.dto.BookQueryDto;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -10,29 +7,20 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.cookie;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(MockitoExtension.class)
 @WebMvcTest(BookController.class)
 class BookControllerTest {
 
+    private final String BASE_URL = "http://localhost/api/v0/book";
     @Autowired
     private MockMvc mockMvc;
-
-    private final String BASE_URL = "http://localhost/api/v0/book";
-
 
     @DisplayName("default검색")
     @Test

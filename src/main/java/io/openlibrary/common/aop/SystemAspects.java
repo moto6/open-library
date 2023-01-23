@@ -12,6 +12,10 @@ import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.*;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
+import org.springframework.transaction.support.TransactionSynchronizationManager;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import java.time.Instant;
 
@@ -30,34 +34,35 @@ public class SystemAspects {
     private void FaultLogPointcut() {
     }
 
+    @Pointcut("@annotation(io.openlibrary.common.aop.advice.TimeCheck)")
+    private void TimeCheckPointcut() {
+    }
 
-//    @Pointcut("@annotation(io.openlibrary.common.aop.advice.PersistLogger)")
-//    private void PersistLogPointcut() {
-//        // @within = 특정한 타입 내의 조인 포인트에 대하여 매칭
-//        // 정한 타입 내의 조인 포인트를 매칭합니다
-
-//    }
-
-
-    @Pointcut("@annotation(io.openlibrary.common.aop.advice.ConnectLogger)")
+    //@Pointcut("@annotation(io.openlibrary.common.aop.advice.ConnectLogger)")//메서드단위
+    @Pointcut("@within(io.openlibrary.common.aop.advice.ConnectLogger)")
     private void ConnectLogPointcut() {
     }
 
     @Pointcut("@within(io.openlibrary.common.aop.advice.PersistLogger)")
-    private void AllConnect() {
-
+    private void PersistLogPointcut() {
     }
 
-
-    //@Around(value = "PersistLogPointcut(), AllConnect()")
-    @Around(value = "AllConnect()")
+    @Around(value = "PersistLogPointcut()")
     public Object persistLog(ProceedingJoinPoint joinPoint) throws Throwable {
         long requestTime = Instant.now().getEpochSecond();
         Object proceed = joinPoint.proceed();
         long responseTime = Instant.now().getEpochSecond();
-        persistRepository.save(new PersistLog(null, null
+        persistRepository.save(new PersistLog((long) TransactionAspectSupport.currentTransactionStatus().hashCode(), getRequestId()
                 , requestTime, responseTime, true));
         return proceed;
+    }
+
+    private long getRequestId() {
+        try {
+            return (long) ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest().getAttribute("X-Request-ID");
+        } catch (Exception e) {
+            return -1L;
+        }
     }
 
     @Around("ConnectLogPointcut()")
@@ -83,6 +88,16 @@ public class SystemAspects {
 //        exception.printStackTrace(new PrintWriter(errors));
 //        faultRepository.save(new FaultLog());
 //    }
+
+    @Around("TimeCheckPointcut()")
+    public Object TimeCheck(ProceedingJoinPoint joinPoint) throws Throwable {
+        long begin = Instant.now().getEpochSecond();
+        Object proceed = joinPoint.proceed();
+        //proceed.wait();
+        long end = Instant.now().getEpochSecond();
+        log.info("Method=[{}.{}],Duration.ms=[{}],", joinPoint.getTarget().getClass().getName(), joinPoint.getSignature().getName(), end - begin);
+        return proceed;
+    }
 }
 
 /*

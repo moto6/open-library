@@ -67,16 +67,13 @@ public class AdminController {
 
     @PostMapping("import/csv")
     public ResponseEntity<?> importCsv() {
-        //todo #1
+        //todo #107 CSV 파일 임포트
         return ResponseEntity.ok(null);
     }
 
     @GetMapping("export/csv")
     public ResponseEntity<?> exportCsv() {
-        //todo #1
+        //todo #108 데이터베이스 내용을 CSV 로 내려주는 기능
         return ResponseEntity.ok(null);
     }
-
-
-
 }

@@ -31,8 +31,12 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-validation'
 	implementation group: 'com.opencsv', name: 'opencsv', version: '4.4'
-	implementation 'org.springframework.boot:spring-boot-starter-data-elasticsearch'
-	implementation 'org.springframework.data:spring-data-elasticsearch:5.0.1'
+	implementation 'org.springframework.boot:spring-boot-starter-data-elasticsearch:2.6.2'
+
+	implementation 'co.elastic.clients:elasticsearch-java:8.6.0'
+	//implementation 'com.fasterxml.jackson.core:jackson-databind:2.12.3'
+	implementation 'jakarta.json:jakarta.json-api:2.0.1'
+
 }
 
 

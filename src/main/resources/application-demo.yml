@@ -30,5 +30,6 @@ spring:
 server:
   port: 8080
 
-ele
-
+elasticsearch:
+  url: localhost
+  port: 19200

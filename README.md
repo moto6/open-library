@@ -105,3 +105,8 @@ spring:
 - 참고문서
   - https://spring.io/blog/2020/08/14/config-file-processing-in-spring-boot-2-4
   - https://github.com/spring-projects/spring-boot/wiki/Spring-Boot-Config-Data-Migration-Guide#profile-groups
+
+
+
+## ES 붙이기
+- https://www.elastic.co/guide/en/elasticsearch/client/java-api-client/current/installation.html

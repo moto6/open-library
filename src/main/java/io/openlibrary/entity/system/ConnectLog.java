@@ -47,11 +47,12 @@ public class ConnectLog {
 
     public ConnectLog(Long requestTimestamp, Long responseTimestamp, CommonUtils commonUtils, ProceedingJoinPoint joinPoint) {
         HttpServletRequest request = commonUtils.getHttpServletRequest();
-        HttpServletResponse response = (HttpServletResponse) joinPoint.getArgs()[1];
+        //todo : response 응답 바디를 가져오고 HttpServletResponse 객체 긁어오는 방법도
+        //HttpServletResponse response = (HttpServletResponse) joinPoint.getArgs()[1];
         this.requestId = (long) request.getAttribute("X-Request-ID");
         this.requestHeader = commonUtils.requestHeader(request);
         this.requestBody = commonUtils.requestBody(request);
-        this.responseBody = commonUtils.responseBody(response);
+        //this.responseBody = commonUtils.responseBody(response);
 
         this.requestTimestamp = requestTimestamp;
         this.responseTimestamp = responseTimestamp;

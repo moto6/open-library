@@ -21,11 +21,11 @@ public class BookSearchElasticRepository implements BookSearchRepository {
     public List<BookMaster> titleSearch(String title) {
         try {
             SearchResponse<BookMaster> search = elasticsearchClient.search(s -> s
-                            .index("products")
+                            .index(indexName)
                             .query(q -> q
                                     .term(t -> t
-                                            .field("name")
-                                            .value(v -> v.stringValue("bicycle"))
+                                            .field("title")
+                                            .value(v -> v.stringValue(title))
                                     )),
                     BookMaster.class);
             return search.hits().hits()

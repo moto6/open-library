@@ -9,8 +9,12 @@ import io.openlibrary.entity.repositroy.AdministratorRepository;
 import io.openlibrary.entity.repositroy.BookMasterRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
+import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
@@ -21,10 +25,16 @@ import static io.openlibrary.common.preload.impl.PreloadServiceCsvToBookMaster.m
 @RequiredArgsConstructor
 public class PreloadLauncher {
 
+    @Value("${preload.activate}")
+    private boolean preloadActivate;
+
+
+
     @Bean
     @Profile(value = {"test", "demo"})
     CommandLineRunner accountInitDatabase(AccountRepository repository) {
         return args -> {
+            if(!preloadActivate) return;
             log.info("Preloading " + repository.save(new Accounts("", "1234", "")));
             log.info("Preloading " + repository.save(new Accounts("", "0000", "")));
         };
@@ -34,6 +44,7 @@ public class PreloadLauncher {
     @Profile(value = {"test", "demo"})
     CommandLineRunner adminInitDatabase(AdministratorRepository repository) {
         return args -> {
+            if(!preloadActivate) return;
             log.info("Preloading " + repository.save(new Administrator("jake.ryu")));
             log.info("Preloading " + repository.save(new Administrator("andrew.w")));
             log.info("Preloading " + repository.save(new Administrator("kelly.j")));
@@ -45,6 +56,7 @@ public class PreloadLauncher {
     @Profile(value = {"test", "demo"})
     CommandLineRunner bookAdd(BookMasterRepository bookMasterRepository, PreloadServiceCsvToBookMaster<BookMaster> preloadServiceCsvToBookMaster) {
         return args -> {
+            if(!preloadActivate) return;
             preloadServiceCsvToBookMaster.savePreload(bookMasterRepository,
                     preloadServiceCsvToBookMaster.initPreload("dataset", "daejeon-sample-202212.csv"),
                     BookMaster.class, mapperCsvToBookMaster());

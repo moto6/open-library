@@ -33,3 +33,6 @@ server:
 elasticsearch:
   url: localhost
   port: 19200
+
+preload:
+  activate: false

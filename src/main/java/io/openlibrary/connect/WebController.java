@@ -16,4 +16,24 @@ public class WebController {
         return "index";
     }
 
+    @GetMapping("/admin/login")
+    public String adminLogin() {
+        //todo #1
+        return "admin/login";
+    }
+
+    @GetMapping("/search")
+    public String search() {
+        //todo #1
+        return "user/book-search";
+    }
+
+    @GetMapping("/login")
+    public String userLogin() {
+        //todo #1
+        return "user/login";
+    }
+
+
+
 }

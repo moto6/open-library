@@ -1,2 +1,7 @@
 ### 검색
 GET localhost:8080/api/v0/books/search/v0/title?keyword=반
+
+
+
+### 인덱스
+GET localhost:8080/api/v0/books/search/v1/title?keyword=반

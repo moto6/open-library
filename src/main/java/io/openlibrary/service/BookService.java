@@ -31,7 +31,7 @@ public class BookService {
 
     @Transactional(isolation = Isolation.READ_UNCOMMITTED, readOnly = true)
     public List<BookMaster> searchByTitleV1Ngram(String keyword) {
-        return null;
+        return bookMasterRepository.findAllByTitleIndex(keyword);
         //return bookMasterRepository;
     }
 

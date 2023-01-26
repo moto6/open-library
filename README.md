@@ -121,4 +121,4 @@ spring:
 SHOW VARIABLES LIKE 'innodb_ft_min_token_size'; -- return:2
 SHOW VARIABLES LIKE 'ft_min_word_len';  -- return:2
 ```
-- 둘다 결과값이 2 나와야함
+- 둘다 결과값이 2 나와야함 : 각각이 어떤의미인지 추가하기

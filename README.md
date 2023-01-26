@@ -108,6 +108,9 @@ spring:
   - https://spring.io/blog/2020/08/14/config-file-processing-in-spring-boot-2-4
   - https://github.com/spring-projects/spring-boot/wiki/Spring-Boot-Config-Data-Migration-Guide#profile-groups
 
+## DDD 관점
+- DDD 너무 어려운데.. 그냥 이렇게 정의하고 싶습니다
+  : 명사들(도메인) 사이의 동사(메서드)
 
 
 ## ES 붙이기

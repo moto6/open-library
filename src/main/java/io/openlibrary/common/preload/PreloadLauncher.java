@@ -4,9 +4,11 @@ import io.openlibrary.common.preload.impl.PreloadServiceCsvToBookMaster;
 import io.openlibrary.entity.domain.Accounts;
 import io.openlibrary.entity.domain.Administrator;
 import io.openlibrary.entity.domain.BookMaster;
+import io.openlibrary.entity.domain.Reservation;
 import io.openlibrary.entity.repositroy.AccountRepository;
 import io.openlibrary.entity.repositroy.AdministratorRepository;
 import io.openlibrary.entity.repositroy.BookMasterRepository;
+import io.openlibrary.entity.repositroy.ReservationRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -29,12 +31,11 @@ public class PreloadLauncher {
     private boolean preloadActivate;
 
 
-
     @Bean
     @Profile(value = {"test", "demo"})
     CommandLineRunner accountInitDatabase(AccountRepository repository) {
         return args -> {
-            if(!preloadActivate) return;
+            if (!preloadActivate) return;
             log.info("Preloading " + repository.save(new Accounts("", "1234", "")));
             log.info("Preloading " + repository.save(new Accounts("", "0000", "")));
         };
@@ -44,10 +45,21 @@ public class PreloadLauncher {
     @Profile(value = {"test", "demo"})
     CommandLineRunner adminInitDatabase(AdministratorRepository repository) {
         return args -> {
-            if(!preloadActivate) return;
-            log.info("Preloading " + repository.save(new Administrator("jake.ryu")));
-            log.info("Preloading " + repository.save(new Administrator("andrew.w")));
+            if (!preloadActivate) return;
+            log.info("Preloading " + repository.save(new Administrator("faraday.m")));
+            log.info("Preloading " + repository.save(new Administrator("feynman.r")));
             log.info("Preloading " + repository.save(new Administrator("kelly.j")));
+        };
+    }
+
+    @Bean
+    @Profile(value = {"test", "demo"})
+    CommandLineRunner reservationInitDatabase(ReservationRepository repository) {
+        return args -> {
+            if (!preloadActivate) return;
+            log.info("Preloading " + repository.save(new Reservation(1L, 1L)));
+            log.info("Preloading " + repository.save(new Reservation(2L, 2L)));
+            log.info("Preloading " + repository.save(new Reservation(3L, 3L)));
         };
     }
 

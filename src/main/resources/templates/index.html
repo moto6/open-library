@@ -6,8 +6,25 @@
 </head>
 <body>
 
-<h1><a href="#"> 어드민으로 로그인하기 </h1>
-<h1><a href="#"> 유저로 계속하기 </h1>
+<h1><a href="/admin/login"> 어드민으로 로그인하기 </a> </h1>
+<h1><a href="/login"> 유저로 로그인 </a> </h1>
+<h1><a href="/search"> 책 검색 </a> </h1>
+
+<hr>
+
+<label> 제목검색
+    <input type="text" id="titleSearch" name="titleSearch" required minlength="2" maxlength="30" size="30">
+    <input type="submit" value="제목 검색" />
+</label>
+
+<hr>
+
+<label> 저자 검색
+    <input type="text" id="authorSearch" name="authorSearch" required minlength="2" maxlength="10" size="10">
+    <input type="submit" value="저자 검색" />
+</label>
+
+<hr>
 
 </body>
 </html>

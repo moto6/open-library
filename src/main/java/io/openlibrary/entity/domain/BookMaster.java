@@ -3,6 +3,7 @@ package io.openlibrary.entity.domain;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 
@@ -12,6 +13,7 @@ import javax.persistence.*;
         @Index(name = "IDX_ISBN_CODE", columnList = "ISBN_CODE", unique = false)
 })
 @Entity
+@ToString
 public class BookMaster {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,7 +29,7 @@ public class BookMaster {
     private Integer publicationYear;
     @Column(name = "ISBN_CODE")
     private String isbnCode;
-    @Column(name = "KDC_CODE", length = 10)
+    @Column(name = "KDC_CODE", length = 20)
     private String kdcCode;
     @Column(name = "INFO_URL")
     private String infoUrl;
@@ -65,8 +67,8 @@ public class BookMaster {
     }
 
     public static String cleaningKdcCode(String kdcCode) {
-        if (kdcCode.length() >= 10) {
-            return kdcCode.substring(0, 9);
+        if (kdcCode.length() >= 18) {
+            return kdcCode.substring(0, 18);
         }
         return kdcCode;
     }

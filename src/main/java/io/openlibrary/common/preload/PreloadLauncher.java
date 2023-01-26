@@ -12,15 +12,12 @@ import io.openlibrary.entity.repositroy.ReservationRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
-import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
-import static io.openlibrary.common.preload.impl.PreloadServiceCsvToBookMaster.mapperCsvToBookMaster;
+import static io.openlibrary.common.preload.impl.PreloadServiceCsvToBookMaster.mapperCsvToEntity;
 
 @Slf4j
 @Configuration
@@ -71,16 +68,16 @@ public class PreloadLauncher {
             if(!preloadActivate) return;
             preloadServiceCsvToBookMaster.savePreload(bookMasterRepository,
                     preloadServiceCsvToBookMaster.initPreload("dataset", "daejeon-sample-202212.csv"),
-                    BookMaster.class, mapperCsvToBookMaster());
+                    BookMaster.class, mapperCsvToEntity());
             log.info("Preloading bookMaster Sample Done. count=[{}]", bookMasterRepository.count());
 
 //            preloadServiceCsvToBookMaster.savePreload(bookMasterRepository,
 //                    preloadServiceCsvToBookMaster.initPreload("dataset", "daejeon-202212.csv"),
-//                    BookMaster.class, mapperCsvToBookMaster());
+//                    BookMaster.class, mapperCsvToEntity());
 //            log.info("Preloading bookMaster 1/2 Done. count=[{}]", bookMasterRepository.count());
 //            preloadServiceCsvToBookMaster.savePreload(bookMasterRepository,
 //                    preloadServiceCsvToBookMaster.initPreload("dataset", "pohang-202212.csv"),
-//                    BookMaster.class, mapperCsvToBookMaster());
+//                    BookMaster.class, mapperCsvToEntity());
 //            log.info("Preloading bookMaster 2/2 Done. count=[{}]", bookMasterRepository.count());
 
 

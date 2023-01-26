@@ -73,6 +73,8 @@ docker-compose -f mysql-docker-compose.yml up -d
 #DB 상태확인
 docker-compose ps
 
+#ES 
+docker-compose -f single-es-docker-compose.yml up -d 
 
 ```
 

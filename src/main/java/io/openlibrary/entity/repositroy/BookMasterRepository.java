@@ -14,9 +14,9 @@ public interface BookMasterRepository extends JpaRepository<BookMaster, Long> {
 
     BookMaster save(BookMaster bookMaster);
 
-    @Modifying
-    @Query(value = "insert into BOOK_MASTER (title,author,publisher,ISBN_CODE) where not exists (select ISBN_CODE from BOOK_MASTER where ISBN_CODE='s') limit 1", nativeQuery = true)
-    void insertif(BookMaster typeMapping);
+    //@Modifying
+    //@Query(value = "insert into BOOK_MASTER (title,author,publisher,ISBN_CODE) where not exists (select ISBN_CODE from BOOK_MASTER where ISBN_CODE='s') limit 1", nativeQuery = true)
+    //void insertif(BookMaster typeMapping);
 
     List<BookMaster> findAllByTitleLike(String keyword);
 

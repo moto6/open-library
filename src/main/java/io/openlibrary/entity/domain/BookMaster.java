@@ -17,8 +17,8 @@ public class BookMaster {
     @GeneratedValue
     @Column(name = "BOOK_MASTER_ID")
     private Long bookMasterId;
-    @Column(name = "TITLE")
-    private String title; //todo : 텍스트인덱싱 필요
+    @Column(name = "TITLE", columnDefinition = "VARCHAR(500), FULLTEXT IDX_FULLTEXT_TITLE (TITLE)")
+    private String title;
     @Column(name = "AUTHOR")
     private String author;
     @Column(name = "PUBLISHER")

@@ -7,8 +7,10 @@ import io.openlibrary.entity.repositroy.BookStockRepository;
 import io.openlibrary.service.result_object.BookDetailRO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
+
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -22,14 +24,22 @@ public class BookService {
         return o;
     }
 
-    @Transactional
-    public List<BookMaster> searchByTitleLike(String keyword) {
-        String match = "%"+ keyword+ "%";
-        return bookMasterRepository.findAllByTitleLike(match);
+    @Transactional(isolation = Isolation.READ_UNCOMMITTED, readOnly = true)
+    public List<BookMaster> searchByTitleV0Like(String keyword) {
+        return bookMasterRepository.findAllByTitleLike("%"+ keyword+ "%");
     }
 
-    public List<BookMaster> searchByAuthorLike(String keyword) {
-        return bookMasterRepository.findAllByAuthorLike(keyword);
+    @Transactional(isolation = Isolation.READ_UNCOMMITTED, readOnly = true)
+    public List<BookMaster> searchByTitleV1Ngram(String keyword) {
+        return null;
+        //return bookMasterRepository;
+    }
+
+    public List<BookMaster> searchByTitleV2Elastic(String keyword) {
+        return null;
+    }
+    public List<BookMaster> searchByAuthorV0Like(String keyword) {
+        return bookMasterRepository.findAllByAuthorLike("%" + keyword + "%");
     }
 
     public List<BookMaster> searchByTitleNgram(String keyword) {
@@ -64,6 +74,7 @@ public class BookService {
     public BookDetailRO detailByisbn(String isbnCode) {
         return null;
     }
+
 
 
 }

@@ -15,6 +15,7 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.NoTransactionException;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -54,8 +55,11 @@ public class SystemAspects {
         long requestTime = Instant.now().getEpochSecond();
         Object proceed = joinPoint.proceed();
         long responseTime = Instant.now().getEpochSecond();
-        persistRepository.save(new PersistLog((long) TransactionAspectSupport.currentTransactionStatus().hashCode(), getRequestId()
-                , requestTime, responseTime, true));
+        try {
+            persistRepository.save(new PersistLog((long) TransactionAspectSupport.currentTransactionStatus().hashCode(), getRequestId(), requestTime, responseTime, true));
+        }catch (NoTransactionException e) {
+            persistRepository.save(new PersistLog(-1L, getRequestId(), requestTime, responseTime, true));
+        }
         return proceed;
     }
 

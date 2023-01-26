@@ -27,17 +27,22 @@ public class BookMaster {
     private Integer publicationYear;
     @Column(name = "ISBN_CODE")
     private String isbnCode;
+    @Column(name = "KDC_CODE", length = 10)
+    private String kdcCode;
     @Column(name = "INFO_URL")
     private String infoUrl;
 
+
+
     //어딧 필요??
     @Builder
-    public BookMaster(String title, String author, String publisher, Integer publicationYear, String isbnCode, String infoUrl) {
+    public BookMaster(String title, String author, String publisher, Integer publicationYear, String isbnCode,String kdcCode, String infoUrl) {
         this.title = title;
         this.author = author;
         this.publisher = publisher;
         this.publicationYear = publicationYear;
         this.isbnCode = isbnCode;
+        this.kdcCode = kdcCode;
         this.infoUrl = infoUrl;
     }
 }

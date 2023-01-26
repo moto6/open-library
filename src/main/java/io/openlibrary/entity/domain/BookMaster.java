@@ -32,9 +32,6 @@ public class BookMaster {
     @Column(name = "INFO_URL")
     private String infoUrl;
 
-
-
-    //어딧 필요??
     @Builder
     public BookMaster(String title, String author, String publisher, Integer publicationYear, String isbnCode,String kdcCode, String infoUrl) {
         this.title = title;
@@ -44,6 +41,34 @@ public class BookMaster {
         this.isbnCode = isbnCode;
         this.kdcCode = kdcCode;
         this.infoUrl = infoUrl;
+    }
+
+
+    public static String cleaningAuthor(String author) {
+        if (author.length() > 100) {
+            return author.substring(0, 99);
+        }
+        return author;
+    }
+
+    public static int convertPublicationYear(String publicationYear) {
+        if (publicationYear.isBlank()) {
+            return 0;
+        }
+        if (publicationYear.length() == 4 && Character.isDigit(publicationYear.charAt(0)) && Character.isDigit(publicationYear.charAt(3))) {
+            return Integer.parseInt(publicationYear);
+        }
+        if (publicationYear.length() == 5 && publicationYear.endsWith("-")) {
+            return Integer.parseInt(publicationYear.substring(0, 3));
+        }
+        return 0;
+    }
+
+    public static String cleaningKdcCode(String kdcCode) {
+        if (kdcCode.length() >= 10) {
+            return kdcCode.substring(0, 9);
+        }
+        return kdcCode;
     }
 }
 

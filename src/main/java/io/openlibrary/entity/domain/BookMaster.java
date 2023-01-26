@@ -14,7 +14,7 @@ import javax.persistence.*;
 @Entity
 public class BookMaster {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "BOOK_MASTER_ID")
     private Long bookMasterId;
     @Column(name = "TITLE", columnDefinition = "VARCHAR(500), FULLTEXT IDX_FULLTEXT_TITLE (TITLE)")

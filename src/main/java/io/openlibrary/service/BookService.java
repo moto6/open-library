@@ -6,6 +6,7 @@ import io.openlibrary.entity.repositroy.BookMasterRepository;
 import io.openlibrary.entity.repositroy.BookStockRepository;
 import io.openlibrary.service.result_object.BookDetailRO;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+@Slf4j
 @RequiredArgsConstructor
 @Service
 public class BookService {
@@ -31,8 +33,7 @@ public class BookService {
 
     @Transactional(isolation = Isolation.READ_UNCOMMITTED, readOnly = true)
     public List<BookMaster> searchByTitleV1Ngram(String keyword) {
-        return bookMasterRepository.findAllByTitleIndex(keyword);
-        //return bookMasterRepository;
+        return bookMasterRepository.findAllByTitleIndex("*"+keyword+"*");
     }
 
     public List<BookMaster> searchByTitleV2Elastic(String keyword) {

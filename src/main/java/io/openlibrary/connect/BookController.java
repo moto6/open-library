@@ -39,10 +39,12 @@ public class BookController {
     }
 
     @GetMapping("/search/v1/title")
-    public ResponseEntity<List<BookMasterResponseDto>> searchTitleQueryV1(@RequestParam String keyword) {
-        //todo #202 - bookMaster 리턴해줘야함. 제목기준으로 full-text-scan
-        bookService.searchByTitleV1Ngram(keyword);
-        return ResponseEntity.ok(null);
+    public ResponseEntity<List<BookMasterResponseDto>> searchTitleQueryV1(@RequestParam("keyword") String keyword) {
+        //todo #202
+        return ResponseEntity.ok(bookService.searchByTitleV1Ngram(keyword)
+                .stream()
+                .map(BookMasterResponseDto::new)
+                .collect(Collectors.toList()));
     }
 
     @GetMapping("/search/v2/title")

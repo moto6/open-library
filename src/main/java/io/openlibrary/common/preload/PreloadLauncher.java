@@ -70,7 +70,7 @@ public class PreloadLauncher {
                     preloadServiceCsvToBookMaster.initPreload("dataset", "pohang-202212.csv"),
                     BookMaster.class, mapperCsvToBookMaster());
             log.info("Preloading bookMaster 2/2 Done. count=[{}]", bookMasterRepository.count());
-             */
+
 
         };
     }

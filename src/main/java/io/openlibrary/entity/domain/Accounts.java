@@ -18,7 +18,7 @@ import java.util.Base64;
 @ToString
 public class Accounts {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ACCOUNT_ID")
     private Long accountId;
     @Column(name = "ACCOUNT_BARCODE")

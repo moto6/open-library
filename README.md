@@ -115,3 +115,10 @@ spring:
 
 ## ES 붙이기
 - https://www.elastic.co/guide/en/elasticsearch/client/java-api-client/current/installation.html
+
+## mysql 풀텍스트서치
+```text
+SHOW VARIABLES LIKE 'innodb_ft_min_token_size'; -- return:2
+SHOW VARIABLES LIKE 'ft_min_word_len';  -- return:2
+```
+- 둘다 결과값이 2 나와야함

@@ -67,16 +67,16 @@ public class PreloadLauncher {
         return args -> {
             if(!preloadActivate) return;
             preloadServiceCsvToBookMaster.savePreload(bookMasterRepository,
-                    preloadServiceCsvToBookMaster.initPreload("dataset", "daejeon-sample-202212.csv"),
+                    preloadServiceCsvToBookMaster.initPreload("dataset", "suji-sample-202212.csv"),
                     BookMaster.class, mapperCsvToEntity());
             log.info("Preloading bookMaster Sample Done. count=[{}]", bookMasterRepository.count());
 
 //            preloadServiceCsvToBookMaster.savePreload(bookMasterRepository,
-//                    preloadServiceCsvToBookMaster.initPreload("dataset", "daejeon-202212.csv"),
+//                    preloadServiceCsvToBookMaster.initPreload("dataset", "suji-202212.csv"),
 //                    BookMaster.class, mapperCsvToEntity());
 //            log.info("Preloading bookMaster 1/2 Done. count=[{}]", bookMasterRepository.count());
 //            preloadServiceCsvToBookMaster.savePreload(bookMasterRepository,
-//                    preloadServiceCsvToBookMaster.initPreload("dataset", "pohang-202212.csv"),
+//                    preloadServiceCsvToBookMaster.initPreload("dataset", "nowon-202212.csv"),
 //                    BookMaster.class, mapperCsvToEntity());
 //            log.info("Preloading bookMaster 2/2 Done. count=[{}]", bookMasterRepository.count());
 

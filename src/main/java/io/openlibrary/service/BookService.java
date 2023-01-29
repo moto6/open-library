@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
-
 import java.util.List;
 
 @Slf4j
@@ -26,12 +25,12 @@ public class BookService {
         return o;
     }
 
-    @Transactional(isolation = Isolation.READ_UNCOMMITTED, readOnly = true)
+    @Transactional(isolation = Isolation.READ_UNCOMMITTED)
     public List<BookMaster> searchByTitleV0Like(String keyword) {
         return bookMasterRepository.findAllByTitleLike("%"+ keyword+ "%");
     }
 
-    @Transactional(isolation = Isolation.READ_UNCOMMITTED, readOnly = true)
+    @Transactional(isolation = Isolation.READ_UNCOMMITTED)
     public List<BookMaster> searchByTitleV1Ngram(String keyword) {
         return bookMasterRepository.findAllByTitleIndex("*"+keyword+"*");
     }

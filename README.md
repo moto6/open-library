@@ -165,19 +165,32 @@ EXPLAIN SELECT * FROM BOOK_MASTER where match(TITLE) AGAINST('*반도체*' IN BO
 
 ### SQLException  Connection is read-only 문제
 
-```log
-2023-01-29 10:36:51.192  WARN 43832 --- [nio-8080-exec-1] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Error: 0, SQLState: S1009
-2023-01-29 10:36:51.192 ERROR 43832 --- [nio-8080-exec-1] o.h.engine.jdbc.spi.SqlExceptionHelper   : Connection is read-only. Queries leading to data modification are not allowed
-2023-01-29 10:36:51.212 ERROR 43832 --- [nio-8080-exec-1] o.a.c.c.C.[.[.[/].[dispatcherServlet]    : Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception [Request processing failed; nested exception is org.springframework.orm.jpa.JpaSystemException: could not execute statement; nested exception is org.hibernate.exception.GenericJDBCException: could not execute statement] with root cause
+- 증상(에러로그)
 
-java.sql.SQLException: Connection is read-only. Queries leading to data modification are not allowed
-	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:129) ~[mysql-connector-j-8.0.31.jar:8.0.31]
-	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:97) ~[mysql-connector-j-8.0.31.jar:8.0.31]
-	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:89) ~[mysql-connector-j-8.0.31.jar:8.0.31]
-	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:63) ~[mysql-connector-j-8.0.31.jar:8.0.31]
-	....
-	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:na]
-	at java.base/java.lang.reflect.Method.invoke(Method.java:566) ~[na:na]
-	at org.springframework.orm.jpa.SharedEntityManagerCreator$SharedEntityManagerInvocationHandler.invoke(SharedEntityManagerCreator.java:311) ~[spring-orm-5.3.24.jar:5.3.24]
-	at com.sun.proxy.$Proxy124.persist(Unknown Source) ~[na:na]
-```
+  ```log
+  2023-01-29 10:36:51.192  WARN 43832 --- [nio-8080-exec-1] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Error: 0, SQLState: S1009
+  2023-01-29 10:36:51.192 ERROR 43832 --- [nio-8080-exec-1] o.h.engine.jdbc.spi.SqlExceptionHelper   : Connection is read-only. Queries leading to data modification are not allowed
+  2023-01-29 10:36:51.212 ERROR 43832 --- [nio-8080-exec-1] o.a.c.c.C.[.[.[/].[dispatcherServlet]    : Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception [Request processing failed; nested exception is org.springframework.orm.jpa.JpaSystemException: could not execute statement; nested exception is org.hibernate.exception.GenericJDBCException: could not execute statement] with root cause
+  
+  java.sql.SQLException: Connection is read-only. Queries leading to data modification are not allowed
+      at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:129) ~[mysql-connector-j-8.0.31.jar:8.0.31]
+      at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:97) ~[mysql-connector-j-8.0.31.jar:8.0.31]
+      at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:89) ~[mysql-connector-j-8.0.31.jar:8.0.31]
+      at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:63) ~[mysql-connector-j-8.0.31.jar:8.0.31]
+      ....
+      at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:na]
+      at java.base/java.lang.reflect.Method.invoke(Method.java:566) ~[na:na]
+      at org.springframework.orm.jpa.SharedEntityManagerCreator$SharedEntityManagerInvocationHandler.invoke(SharedEntityManagerCreator.java:311) ~[spring-orm-5.3.24.jar:5.3.24]
+      at com.sun.proxy.$Proxy124.persist(Unknown Source) ~[na:na]
+  ```
+- 해결책
+  - before
+  ```java
+  @Transactional(isolation = Isolation.READ_UNCOMMITTED, readOnly = true) // readOnly를 false 로 수정한다
+  public List<BookMaster> searchByTitleV0Like(String keyword) {
+      return bookMasterRepository.findAllByTitleLike("%"+ keyword+ "%");
+  }
+  ```
+- 원인
+  : AOP 로 로깅하는 부분이 있는데, 로깅자체도 트랜잭션의 범위에 포함되고 save 동작이기 때문에 해당 에러가 발생.
+  : 즉, 메인로직만 보면 insert, update 가 없지만 세컨더리 로직(AOP 로 돌아가는) 에서 insert 쿼리가 날라가기때문에 발생한 문제 

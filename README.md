@@ -236,6 +236,10 @@ remote: warning: GH001: Large files detected. You may want to try Git Large File
 split -b 30m data.csv data-split_ #30MB 단위로 파일을 분할하는 명령어 
 ```
 - 위 명령어를 가지고 용량제한에 걸리는 파일들을 쪼개서 데이터셋을 올렸습니다
+- 이제 파일수가 많아졌으니까.. 기존에 copy&paste 로 datainsert 를 하지말고, 파일명으로 데이터셋업을 해야겠죠..? 
+```bash
+ls -l | awk '{ print $9 }' #맥에서 현 위치에서 파일명만 출력하는 명령어
+```
 
 
 ### 데이터셋 관련 트러블슈팅2 : 파일인코딩

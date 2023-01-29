@@ -194,3 +194,33 @@ EXPLAIN SELECT * FROM BOOK_MASTER where match(TITLE) AGAINST('*반도체*' IN BO
 - 원인
   : AOP 로 로깅하는 부분이 있는데, 로깅자체도 트랜잭션의 범위에 포함되고 save 동작이기 때문에 해당 에러가 발생.
   : 즉, 메인로직만 보면 insert, update 가 없지만 세컨더리 로직(AOP 로 돌아가는) 에서 insert 쿼리가 날라가기때문에 발생한 문제 
+
+
+## 데이터셋 이야기
+
+### 데이터셋 구하는 법 공유
+
+- 데이터셋만 추가하지 말고 물고기잡는법도 적어놓고 싶습니다..
+- 도서관 관련 데이터셋은 여기 링크에서 구했습니다 : https://www.data4library.kr
+- 이게 도서관 규모별로 장서 수량에 차이가 좀 있습니다. 수도권 자치단체(도봉구, 분당구..) 중앙도서관급은 평균적으로 20먄권(약 30MB) 장서를 보유
+- 근데 이게 생각해보면 자치단체 중앙도서관별 장서 목록은 많은 부분이 겹칠꺼라고 예상됩니다. 따라서 의미있는 그러니까 여러가지 장서데이터를 얻기 위해서는 작은 도서관 여러개보다는 대형도서관 한두곳의 장서정보를 추가하는편이 적절하다고 생각합니다.
+- 대형도서관들을 검색하는 키워드는 아래와 같습니다
+  - : `중앙, 국립, 시립, 광역시`
+- 이 repository 의 resource/dataset 디텍토리에도 해당 키워드로 검색해서 장서수 20만권 이상의 도서관들의 데이터를 수잡하였습니 
+
+### 데이터셋 공유
+- 깃허브로 코드만 공유하면 이런일은 발생하지 않지만... 데이터셋을 공유하면 아래같은 문제가 발생하는데요
+```text
+remote: Resolving deltas: 100% (6/6), completed with 5 local objects.
+remote: warning: See http://git.io/iEPt8g for more information.
+remote: warning: File src/main/resources/dataset/안산시 중앙도서관 장서 대출목록 (2022년 12월).csv is 50.32 MB; this is larger than GitHub's recommended maximum file size of 50.00 MB
+remote: warning: GH001: Large files detected. You may want to try Git Large File Storage - https://git-lfs.github.com.
+```
+- 50MB 이상의 파일은 업로드가 불가능하다는것..
+  - 총 3개의 데이터셋이 문제가 되는데요 
+  ```text
+  -rw-r--r--@ 1 dong  staff    89M  1 29 20:21 nationalsejong-202212.csv
+  -rw-r--r--@ 1 dong  staff    50M  1 29 20:20 ansan-202212.csv
+  -rw-r--r--@ 1 dong  staff    69M  1 29 20:19 Gyeonggi-202212.csv
+  ```
+  - 여기서 깃허브 파일업로드사이즈 제한인 50메가를 아슬하게 넘게는 `ansan` 데이터는 trim으로, Gyeonggi, nationalsejong 두군대는 2개의 파일로 쪼개서 50메가 제한을 회피하였습니다.

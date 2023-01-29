@@ -52,9 +52,9 @@ public class SystemAspects {
 
     @Around(value = "PersistLogPointcut()")
     public Object persistLog(ProceedingJoinPoint joinPoint) throws Throwable {
-        long requestTime = Instant.now().getEpochSecond();
+        long requestTime = Instant.now().toEpochMilli();
         Object proceed = joinPoint.proceed();
-        long responseTime = Instant.now().getEpochSecond();
+        long responseTime = Instant.now().toEpochMilli();
         try {
             persistRepository.save(new PersistLog((long) TransactionAspectSupport.currentTransactionStatus().hashCode(), getRequestId(), requestTime, responseTime, true));
         }catch (NoTransactionException e) {
@@ -73,9 +73,9 @@ public class SystemAspects {
 
     @Around("ConnectLogPointcut()")
     public Object connectLog(ProceedingJoinPoint joinPoint) throws Throwable {
-        long requestTime = Instant.now().getEpochSecond();
+        long requestTime = Instant.now().toEpochMilli();
         Object proceed = joinPoint.proceed();
-        long responseTime = Instant.now().getEpochSecond();
+        long responseTime = Instant.now().toEpochMilli();
         connectRepository.save(new ConnectLog(requestTime, responseTime, commonUtils, joinPoint));
         return proceed;
     }
@@ -97,10 +97,10 @@ public class SystemAspects {
 
     @Around("TimeCheckPointcut()")
     public Object TimeCheck(ProceedingJoinPoint joinPoint) throws Throwable {
-        long begin = Instant.now().getEpochSecond();
+        long begin = Instant.now().toEpochMilli();
         Object proceed = joinPoint.proceed();
         //proceed.wait();
-        long end = Instant.now().getEpochSecond();
+        long end = Instant.now().toEpochMilli();
         log.info("Method=[{}.{}],Duration.ms=[{}],", joinPoint.getTarget().getClass().getName(), joinPoint.getSignature().getName(), end - begin);
         return proceed;
     }

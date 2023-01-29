@@ -82,7 +82,7 @@ public class PreloadLauncher {
     @Profile(value = {"test", "demo"})
     CommandLineRunner bookAdd(BookMasterRepository bookMasterRepository, PreloadServiceCsvToBookMaster<BookMaster> preloadServiceCsvToBookMaster) {
         return args -> {
-            if (false) {
+            if (true) {
                 log.info("Saving the entire dataset is risky");
                 return;
             }

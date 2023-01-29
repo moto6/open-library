@@ -117,12 +117,67 @@ spring:
 - https://www.elastic.co/guide/en/elasticsearch/client/java-api-client/current/installation.html
 
 ## mysql 풀텍스트서치
+
+- 풀텍스트 인덱스 옵션
+
 ```text
 SHOW VARIABLES LIKE 'innodb_ft_min_token_size'; -- return:2
 SHOW VARIABLES LIKE 'ft_min_word_len';  -- return:2
 ```
-- 둘다 결과값이 2 나와야함 : 각각이 어떤의미인지 추가하기
+
+- innodb_ft_min_token_size
+  : InnoDB 스토리지 엔진에 특정한 설정 
+  : 전체 텍스트 검색을 위해 인덱싱될 단어의 최소 크기를 제어하는 파라미터, 이 값보다 짧은 단어는 인덱싱되지 않음
+
+- ft_min_word_len 
+  : MySQL의 전체 텍스트 인덱싱을 위한 일반 설정
+  : 전체 텍스트 검색을 위해 인덱싱될 단어의 최소 길이를 제어하는 파라미터, 이 값보다 짧은 단어는 인덱싱되지 않음
+
+- 결론 : InnoDB Only vs MySQL specific  의 차이
+  : 두개의 파라미터가 서로 다르면 어떻게 동작하는지, 우선순위가 있는건지는 공식문서에서도 찾을수 없었습니다
+  : 그래서 결론은 안전하게 둘다 2 로 맞추자! 라고 결론내렸습니다
+
+
+### mysql 풀텍스트서치 쿼리문 
+: (검색키워드가 "반도체" 일때)
+
+- 풀텍스트서치 LIKE 쿼리 
+
+```sql
+SELECT * from BOOK_MASTER where TITLE LIKE '%반도체%';
+
+-- 검증
+EXPLAIN SELECT * from BOOK_MASTER where TITLE LIKE '%반도체%';
+```
+
+- 풀텍스트 인덱스를 타는 쿼리 
+
 ```SQL
 SELECT * FROM BOOK_MASTER where match(TITLE) AGAINST('*반도체*' IN BOOLEAN MODE);
-SELECT * from BOOK_MASTER where TITLE LIKE '%반도체%';
+EXPLAIN SELECT * FROM BOOK_MASTER where match(TITLE) AGAINST('*반도체*' IN BOOLEAN MODE);
+```
+
+
+
+
+
+## 트러블슈팅
+
+### SQLException  Connection is read-only 문제
+
+```log
+2023-01-29 10:36:51.192  WARN 43832 --- [nio-8080-exec-1] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Error: 0, SQLState: S1009
+2023-01-29 10:36:51.192 ERROR 43832 --- [nio-8080-exec-1] o.h.engine.jdbc.spi.SqlExceptionHelper   : Connection is read-only. Queries leading to data modification are not allowed
+2023-01-29 10:36:51.212 ERROR 43832 --- [nio-8080-exec-1] o.a.c.c.C.[.[.[/].[dispatcherServlet]    : Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception [Request processing failed; nested exception is org.springframework.orm.jpa.JpaSystemException: could not execute statement; nested exception is org.hibernate.exception.GenericJDBCException: could not execute statement] with root cause
+
+java.sql.SQLException: Connection is read-only. Queries leading to data modification are not allowed
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:129) ~[mysql-connector-j-8.0.31.jar:8.0.31]
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:97) ~[mysql-connector-j-8.0.31.jar:8.0.31]
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:89) ~[mysql-connector-j-8.0.31.jar:8.0.31]
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:63) ~[mysql-connector-j-8.0.31.jar:8.0.31]
+	....
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:566) ~[na:na]
+	at org.springframework.orm.jpa.SharedEntityManagerCreator$SharedEntityManagerInvocationHandler.invoke(SharedEntityManagerCreator.java:311) ~[spring-orm-5.3.24.jar:5.3.24]
+	at com.sun.proxy.$Proxy124.persist(Unknown Source) ~[na:na]
 ```

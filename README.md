@@ -68,7 +68,7 @@ lend : 내가 빌려주는 경우. 증여하거나, 타인에게 나중에 나�
 ## 로컬환경 실행 인프라셋팅
 ```shell
 #DB 실행
-docker-compose -f mysql-docker-compose.yml up -d
+docker-compose -f demo-docker-compose.yml up -d
 
 #DB 상태확인
 docker-compose ps

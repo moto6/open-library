@@ -58,6 +58,7 @@ public class SystemAspects {
         try {
             persistRepository.save(new PersistLog((long) TransactionAspectSupport.currentTransactionStatus().hashCode(), getRequestId(), requestTime, responseTime, true));
         }catch (NoTransactionException e) {
+            log.warn("트랜잭션 없는 DB 접근 감지됨");
             persistRepository.save(new PersistLog(-1L, getRequestId(), requestTime, responseTime, true));
         }
         return proceed;

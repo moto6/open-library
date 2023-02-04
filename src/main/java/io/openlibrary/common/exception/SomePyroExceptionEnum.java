@@ -1,11 +1,12 @@
 package io.openlibrary.common.exception;
 
 
-public enum OpenLibraryExceptionCodeEnum implements ExceptionCode{
-    ENTITY_NOT_FOUND("엔티티에 존재하지 않는 데이터 입니다"),
-    UNEXPECTED("알수없는에러");
+public enum SomePyroExceptionEnum implements ExceptionCode{
 
-    OpenLibraryExceptionCodeEnum(String description) {
+    REASON1("이유없는이유"),
+    REASON2("이유있는이유");
+
+    SomePyroExceptionEnum(String description) {
         this.description = description;
     }
 
@@ -13,7 +14,7 @@ public enum OpenLibraryExceptionCodeEnum implements ExceptionCode{
 
     @Override
     public String getCode() {
-        return this.name();
+        return null;
     }
 
     @Override
@@ -21,5 +22,3 @@ public enum OpenLibraryExceptionCodeEnum implements ExceptionCode{
         return this.description;
     }
 }
-
-

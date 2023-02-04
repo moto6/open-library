@@ -1,0 +1,45 @@
+version: '3'
+services:
+
+  # mysql
+  open-library-mysql:
+    image: mysql:8.0
+    platform: linux/arm64/v8
+    command:
+      - --default-authentication-plugin=mysql_native_password
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+      - '--ft_min_word_len=2'
+      - '--innodb_ft_min_token_size=2'
+    restart: always
+    container_name: open-library-mysql
+    environment:
+      MYSQL_DATABASE: open-library
+      MYSQL_ROOT_PASSWORD: hardpaaswordplz
+      MYSQL_USER: holy
+      MYSQL_PASSWORD: moly
+      TZ: Asia/Seoul
+    ports:
+      - "18080:3306"
+    deploy:
+      resources:
+        limits:
+          cpus: '2.0'
+          memory: 1GB
+        reservations:
+          cpus: '0.2'
+          memory: 1GB
+
+
+
+  # elasticsearch(single)
+  open-library-elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.10.1
+    environment:
+      - discovery.type=single-node
+    ports:
+      - "19200:9200"
+      - "19300:9300"
+
+# docker-compose -f demo-docker-compose.yml up -d
+# docker-compose -f demo-docker-compose.yml up -d

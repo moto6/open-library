@@ -20,10 +20,14 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Function;
 
 import static io.openlibrary.common.preload.component.PreloadException.INIT_FAIL;
 import static io.openlibrary.common.preload.component.PreloadException.NOT_YET_IMPL;
+import static io.openlibrary.entity.domain.BookMaster.cleaningAuthor;
+import static io.openlibrary.entity.domain.BookMaster.cleaningKdcCode;
+import static io.openlibrary.entity.domain.BookMaster.convertPublicationYear;
 
 @RequiredArgsConstructor
 @Service
@@ -32,17 +36,17 @@ public class PreloadServiceCsvToBookMaster<T> implements PreloadService<T> {
 
     private final PreloadUtils preloadUtils;
 
-    public static Function<? super String[], ? extends BookMaster> mapperCsvToBookMaster() {
+    public static Function<? super String[], ? extends BookMaster> mapperCsvToEntity() {
 
         return strings -> {
             BookMaster.BookMasterBuilder builder = BookMaster.builder();
             builder.title(strings[1]);
-            builder.author(validAuthoer(strings[2]));
+            builder.author(cleaningAuthor(strings[2]));
             builder.publisher(strings[3]);
-            builder.publicationYear(validYear(strings[4]));
-            builder.isbnCode(strings[5]);
-            return builder
-                    .build();
+            builder.publicationYear(convertPublicationYear(strings[4]));
+            builder.kdcCode(strings[9]);
+            builder.isbnCode(cleaningKdcCode(strings[5]));
+            return builder.build();
             //0-번호,
             // 1-도서명,
             // 2저자,
@@ -56,34 +60,9 @@ public class PreloadServiceCsvToBookMaster<T> implements PreloadService<T> {
             // 10도서권수,
             // 11대출건수,
             // 12등록일자,
-
         };
     }
 
-    private static String validAuthoer(String string) {
-        if (string.length() > 100) {
-            return string.substring(0, 99);
-        }
-        return string;
-    }
-
-    private static Integer validYear(String string) {
-        if (string.isBlank()) {
-            return 0;
-        }
-        if (string.length() == 4 && isNumber(string.charAt(0)) && isNumber(string.charAt(3))) {
-            return Integer.parseInt(string);
-        }
-        if (string.length() == 5 && string.endsWith("-")) {
-            return Integer.parseInt(string.substring(0, 3));
-        }
-        return 0;
-        //string.startsWith("-")
-    }
-
-    private static boolean isNumber(char c) {
-        return ('0' <= c) && (c <= '9');
-    }
 
     @Override
     public PreloadHandler initPreload(String path, String fileName) {
@@ -111,23 +90,18 @@ public class PreloadServiceCsvToBookMaster<T> implements PreloadService<T> {
         try (CSVReader reader = new CSVReader(new InputStreamReader(preloadHandler.getResource().getInputStream()))) {
             reader.skip(1);
             reader.iterator().forEachRemaining(csvLine -> {
-                //if(bookMasterRepository.findByIsbnCode(csvLine[5]) == null) {
-                bookMasterRepository.save((BookMaster) TypeMapping(saveType, csvLine, mapper));
+                BookMaster apply = (BookMaster) mapper.apply(csvLine);
+                log.info("{}",apply.toString());
+                bookMasterRepository.save(apply);
                 //bookMasterRepository.insertif((BookMaster) TypeMapping(saveType, csvLine, mapper));
-                //}
             });
         } catch (IOException e) {
+            e.printStackTrace();
             log.error("pass... IOException ");
-            //throw new PreloadException("Fail to save csv");
         } catch (Exception e) {
             e.printStackTrace();
-            //e.getCause();
             log.error("pass... [{}]", e.getMessage());
         }
-    }
-
-    private T TypeMapping(Class<T> saveType, String[] csvLine, Function<? super String[], ? extends T> mapper) {
-        return mapper.apply(csvLine);
     }
 
     @Override

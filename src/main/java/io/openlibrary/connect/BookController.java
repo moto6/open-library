@@ -3,17 +3,16 @@ package io.openlibrary.connect;
 import io.openlibrary.common.aop.advice.ConnectLogger;
 import io.openlibrary.connect.dto.BookDetailResponseDto;
 import io.openlibrary.connect.dto.BookMasterResponseDto;
-import io.openlibrary.connect.dto.BookQueryDto;
 import io.openlibrary.service.BookService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @ConnectLogger
@@ -31,19 +30,57 @@ public class BookController {
     }
 
 
-    @GetMapping("/search/title")
-    public ResponseEntity<List<BookMasterResponseDto>> titleQuery(@RequestBody BookQueryDto bookQueryDto) {
+    @GetMapping("/search/v0/title")
+    public ResponseEntity<List<BookMasterResponseDto>> searchTitleQueryV0(@RequestParam("keyword") String keyword) {
+        return ResponseEntity.ok(bookService.searchByTitleV0Like(keyword)
+                .stream()
+                .map(BookMasterResponseDto::new)
+                .collect(Collectors.toList()));
+    }
+
+    @GetMapping("/search/v1/title")
+    public ResponseEntity<List<BookMasterResponseDto>> searchTitleQueryV1(@RequestParam("keyword") String keyword) {
+        //todo #202
+        return ResponseEntity.ok(bookService.searchByTitleV1Ngram(keyword)
+                .stream()
+                .map(BookMasterResponseDto::new)
+                .collect(Collectors.toList()));
+    }
+
+    @GetMapping("/search/v2/title")
+    public ResponseEntity<List<BookMasterResponseDto>> searchTitleQueryV2(@RequestParam String keyword) {
         //todo #202 - bookMaster 리턴해줘야함. 제목기준으로 full-text-scan
-        bookService.searchByTitle(bookQueryDto);
+        bookService.searchByTitleV2Elastic(keyword);
         return ResponseEntity.ok(null);
     }
 
-    @GetMapping("/search/author")
-    public ResponseEntity<List<BookMasterResponseDto>> authorQuery(@RequestBody BookQueryDto bookQueryDto) {
-        //todo #202 - bookMaster 리턴해줘야함. 저자기준으로 검색
-        bookService.searchByAuthor(bookQueryDto);
-        return ResponseEntity.ok(null);
+    @GetMapping("/search/v0/author")
+    public ResponseEntity<List<BookMasterResponseDto>> searchAuthorQueryV0(@RequestParam String keyword) {
+        return ResponseEntity.ok(bookService
+                .searchByAuthorV0Like(keyword)
+                .stream()
+                .map(BookMasterResponseDto::new)
+                .collect(Collectors.toList())
+        );
     }
+
+//    @GetMapping("/search/v1/author")
+//    public ResponseEntity<List<BookMasterResponseDto>> searchAuthorQueryV1(@RequestParam String keyword) {
+//        //todo #202 - bookMaster 리턴해줘야함. 저자기준으로 검색
+//        bookService.searchByAuthorV2(keyword);
+//        return ResponseEntity.ok(null);
+//    }
+//
+//
+//    @GetMapping("/search/v2/author")
+//    public ResponseEntity<List<BookMasterResponseDto>> searchAuthorQueryV2(@RequestParam String keyword) {
+//        //todo #202 - bookMaster 리턴해줘야함. 저자기준으로 검색
+//        bookService.searchByAuthorLike(keyword);
+//        return ResponseEntity.ok(null);
+//    }
+
+
+
 
 
     @GetMapping("/{bookMasterCode}")

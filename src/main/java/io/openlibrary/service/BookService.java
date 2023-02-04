@@ -1,16 +1,19 @@
 package io.openlibrary.service;
 
-import io.openlibrary.connect.dto.BookQueryDto;
 import io.openlibrary.entity.domain.BookMaster;
 import io.openlibrary.entity.domain.BookStock;
 import io.openlibrary.entity.repositroy.BookMasterRepository;
 import io.openlibrary.entity.repositroy.BookStockRepository;
 import io.openlibrary.service.result_object.BookDetailRO;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+@Slf4j
 @RequiredArgsConstructor
 @Service
 public class BookService {
@@ -22,9 +25,33 @@ public class BookService {
         return o;
     }
 
-    public List<BookMaster> searchByTitle(BookQueryDto bookQueryDto) {
+    @Transactional(isolation = Isolation.READ_UNCOMMITTED)
+    public List<BookMaster> searchByTitleV0Like(String keyword) {
+        return bookMasterRepository.findAllByTitleLike("%"+ keyword+ "%");
+    }
+
+    @Transactional(isolation = Isolation.READ_UNCOMMITTED)
+    public List<BookMaster> searchByTitleV1Ngram(String keyword) {
+        return bookMasterRepository.findAllByTitleIndex("*"+keyword+"*");
+    }
+
+    public List<BookMaster> searchByTitleV2Elastic(String keyword) {
         return null;
     }
+    public List<BookMaster> searchByAuthorV0Like(String keyword) {
+        return bookMasterRepository.findAllByAuthorLike("%" + keyword + "%");
+    }
+
+    public List<BookMaster> searchByTitleNgram(String keyword) {
+        //todo : 엔그램인덱스 타랏
+        return null;
+    }
+
+    public List<BookMaster> searchByAuthorNgram(String keyword) {
+        //todo : 엔그렘인덱스
+        return null;
+    }
+
 
 
     public List<BookMaster> masterList() {
@@ -48,7 +75,6 @@ public class BookService {
         return null;
     }
 
-    public List<BookMaster> searchByAuthor(BookQueryDto bookQueryDto) {
-        return null;
-    }
+
+
 }

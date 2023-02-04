@@ -7,7 +7,7 @@ import javax.validation.constraints.NotBlank;
 @Table(name = "LENT")
 public class Lent {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "LEND_ID")
     private Long lendId;
     @NotBlank

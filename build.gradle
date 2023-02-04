@@ -24,7 +24,6 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	compileOnly 'org.projectlombok:lombok'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
-	runtimeOnly 'com.h2database:h2'
 	runtimeOnly 'com.mysql:mysql-connector-j'
 	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 	annotationProcessor 'org.projectlombok:lombok'
@@ -34,7 +33,6 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-elasticsearch:2.6.2'
 
 	implementation 'co.elastic.clients:elasticsearch-java:8.6.0'
-	//implementation 'com.fasterxml.jackson.core:jackson-databind:2.12.3'
 	implementation 'jakarta.json:jakarta.json-api:2.0.1'
 
 }
@@ -43,10 +41,3 @@ dependencies {
 tasks.named('test') {
 	useJUnitPlatform()
 }
-
-//
-//bootRun {
-//	String activeProfile = System.properties['spring.profiles.active']
-//	println "zone: $activeProfile"
-//	systemProperty "spring.profiles.active", activeProfile
-//}

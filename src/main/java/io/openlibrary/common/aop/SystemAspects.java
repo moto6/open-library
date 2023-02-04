@@ -15,6 +15,7 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.NoTransactionException;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -51,11 +52,15 @@ public class SystemAspects {
 
     @Around(value = "PersistLogPointcut()")
     public Object persistLog(ProceedingJoinPoint joinPoint) throws Throwable {
-        long requestTime = Instant.now().getEpochSecond();
+        long requestTime = Instant.now().toEpochMilli();
         Object proceed = joinPoint.proceed();
-        long responseTime = Instant.now().getEpochSecond();
-        persistRepository.save(new PersistLog((long) TransactionAspectSupport.currentTransactionStatus().hashCode(), getRequestId()
-                , requestTime, responseTime, true));
+        long responseTime = Instant.now().toEpochMilli();
+        try {
+            persistRepository.save(new PersistLog((long) TransactionAspectSupport.currentTransactionStatus().hashCode(), getRequestId(), requestTime, responseTime, true));
+        }catch (NoTransactionException e) {
+            log.warn("트랜잭션 없는 DB 접근 감지됨");
+            persistRepository.save(new PersistLog(-1L, getRequestId(), requestTime, responseTime, true));
+        }
         return proceed;
     }
 
@@ -69,9 +74,9 @@ public class SystemAspects {
 
     @Around("ConnectLogPointcut()")
     public Object connectLog(ProceedingJoinPoint joinPoint) throws Throwable {
-        long requestTime = Instant.now().getEpochSecond();
+        long requestTime = Instant.now().toEpochMilli();
         Object proceed = joinPoint.proceed();
-        long responseTime = Instant.now().getEpochSecond();
+        long responseTime = Instant.now().toEpochMilli();
         connectRepository.save(new ConnectLog(requestTime, responseTime, commonUtils, joinPoint));
         return proceed;
     }
@@ -93,10 +98,10 @@ public class SystemAspects {
 
     @Around("TimeCheckPointcut()")
     public Object TimeCheck(ProceedingJoinPoint joinPoint) throws Throwable {
-        long begin = Instant.now().getEpochSecond();
+        long begin = Instant.now().toEpochMilli();
         Object proceed = joinPoint.proceed();
         //proceed.wait();
-        long end = Instant.now().getEpochSecond();
+        long end = Instant.now().toEpochMilli();
         log.info("Method=[{}.{}],Duration.ms=[{}],", joinPoint.getTarget().getClass().getName(), joinPoint.getSignature().getName(), end - begin);
         return proceed;
     }

@@ -14,7 +14,7 @@ import javax.persistence.*;
 })
 public class BookStock {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "BOOK_STOCK_ID")
     private Long bookStockId;
     @Column(name = "BOOK_MASTER_ID")

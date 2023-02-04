@@ -9,7 +9,6 @@ services:
       - --default-authentication-plugin=mysql_native_password
       - --character-set-server=utf8mb4
       - --collation-server=utf8mb4_unicode_ci
-      - --ft_min_word_len=2
       - '--ft_min_word_len=2'
       - '--innodb_ft_min_token_size=2'
     restart: always

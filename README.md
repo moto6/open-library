@@ -253,3 +253,13 @@ ls -l | awk '{ print $9 }' #맥에서 현 위치에서 파일명만 출력하는
 ```
 
 - 그래서 데이터셋들의 인코딩을 모두 UTF-8로 변환해주는 전처리작업을 진행해두었습니다
+
+
+## 인프라 구축 가이드
+
+- 성능산정 근거 
+  - 시뮬레이션 타겟을 AWS Free Tier 기준
+```text
+VM/EC2 > t2.micro /  Memory=1GiB / vCPUs=1.0
+RDBMS/RDS > T3Micro(db.t3.micro) / Memory=1GiB / vCPUs=2.0
+```

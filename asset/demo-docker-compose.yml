@@ -22,8 +22,18 @@ services:
       TZ: Asia/Seoul
     ports:
       - "18080:3306"
+    deploy:
+      resources:
+        limits:
+          cpus: '2.0'
+          memory: 1GB
+        reservations:
+          cpus: '0.2'
+          memory: 1GB
 
-  # elasticsearch
+
+
+  # elasticsearch(single)
   open-library-elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.10.1
     environment:

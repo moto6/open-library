@@ -76,6 +76,8 @@ docker-compose ps
 #ES 
 docker-compose -f single-es-docker-compose.yml up -d 
 
+#test 프로파일로 spring boot 실행
+./gradlew bootRun --args='--spring.profiles.active=test'
 ```
 
 - 프로퍼티 체크
@@ -87,6 +89,9 @@ spring.datasource.driver-class-name=com.mysql.jdbc.Driver
 spring.jpa.database-platform=org.hibernate.dialect.MySQL5Dialect
 ```
 
+- 프로파일을 IntelliJ 에서 설정
+
+![test-profile](img/test-profile.png)
 
 ## 컨피그파일
 

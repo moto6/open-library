@@ -4,20 +4,29 @@ services:
   # mysql
   open-library-mysql:
     image: mysql:8.0
-    platform: linux/arm64/v8
+    platform: linux/amd64
+    #  platform: linux/arm64/v8
+#    volumes:
+#      - ./db/conf.d:/etc/mysql/conf.d
+#      - ./db/data:/var/lib/mysql
+#      - ./db/initdb.d:/docker-entrypoint-initdb.d
+#    env_file: docker.env
     command:
-      - --default-authentication-plugin=mysql_native_password
       - --character-set-server=utf8mb4
       - --collation-server=utf8mb4_unicode_ci
       - '--ft_min_word_len=2'
       - '--innodb_ft_min_token_size=2'
+      # - --default-authentication-plugin=mysql_native_password
+    expose:
+      - "3306"
     restart: always
     container_name: open-library-mysql
     environment:
       MYSQL_DATABASE: open-library
-      MYSQL_ROOT_PASSWORD: hardpaaswordplz
       MYSQL_USER: holy
       MYSQL_PASSWORD: moly
+      MYSQL_ROOT_PASSWORD: root
+      restart: always
       TZ: Asia/Seoul
     ports:
       - "18080:3306"

@@ -10,8 +10,8 @@ spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:18080/open-library
-    username: root
-    password: hardpaaswordplz
+    username: holy
+    password: moly
 
   jpa:
     database-platform: org.hibernate.dialect.MySQL8Dialect
